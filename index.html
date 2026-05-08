@@ -1257,10 +1257,17 @@
     letter-spacing: 0.05em;
     margin-bottom: 40px;
     color: var(--text-dark);
-    /* 和文句読点（、。）の右側余白を視覚補正：palt 1 でプロポーショナルに */
-    font-feature-settings: "palt" 1;
-    /* 句読点で行末が左寄りに見える問題を補正（モダンブラウザ対応） */
+    /* 和文句読点（、。）プロポーショナル化 */
+    font-feature-settings: "palt" 1, "halt" 1, "chws" 1;
     text-spacing-trim: trim-end;
+    /* 句読点による視覚左寄りを物理補正：行末余白を詰める */
+    padding-left: 0.4em;
+    padding-right: 0;
+  }
+  /* 行末句読点の負マージン補正（より確実に視覚センター化） */
+  .hero h1 br + em::before {
+    content: "";
+    display: inline;
   }
   .hero h1 em {
     font-style: normal;
