@@ -2047,6 +2047,19 @@
   .page-back-link:hover { color: var(--primary); }
 
 
+
+    /* NEW badge for recent NEWS items (within 7 days) */
+    .news-list-item.is-new .news-list-title::after{
+      content:"New";
+      font-family:'Cormorant Garamond', serif;
+      font-style:italic;
+      font-weight:500;
+      color:var(--gold);
+      margin-left:.55em;
+      font-size:.82em;
+      letter-spacing:.04em;
+      vertical-align:.05em;
+    }
 </style>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-PBHFPE4RL8"></script>
@@ -2105,19 +2118,19 @@
       </li>
       ============================================================ -->
       <li class="news-list-item" style="flex-wrap:wrap;">
-        <time class="news-list-date">2026.05.04</time>
+        <time class="news-list-date">2026.05.09</time>
         <span class="news-list-cat">お知らせ</span>
         <span class="news-list-title">公式サイトを公開しました</span>
         <p style="width:100%; padding-left:124px; margin-top:8px; font-size:13px; color:var(--text-muted); line-height:1.9;">クラス案内・スケジュール・料金など、教室の最新情報をご覧いただけます。</p>
       </li>
       <li class="news-list-item" style="flex-wrap:wrap;">
-        <time class="news-list-date">2026.05.04</time>
+        <time class="news-list-date">2026.05.09</time>
         <span class="news-list-cat">お知らせ</span>
         <span class="news-list-title">体験レッスンのご案内</span>
         <p style="width:100%; padding-left:124px; margin-top:8px; font-size:13px; color:var(--text-muted); line-height:1.9;">大人クラスは予約不要・直接ご来訪、お子さまのクラスは予約制で受付しております。</p>
       </li>
       <li class="news-list-item" style="flex-wrap:wrap;">
-        <time class="news-list-date">2026.05.04</time>
+        <time class="news-list-date">2026.05.09</time>
         <span class="news-list-cat">お知らせ</span>
         <span class="news-list-title">ご相談・お問い合わせは LINE 公式アカウントよりお気軽に</span>
         <p style="width:100%; padding-left:124px; margin-top:8px; font-size:13px; color:var(--text-muted); line-height:1.9;">入会前のご質問、お子さまのクラスについて、プロ育成コースについてなど、お気軽にどうぞ。</p>
@@ -2165,5 +2178,26 @@
   </div>
 </footer>
 
+
+  <script>
+    /* NEW badge auto-tagger: items within 7 days get .is-new */
+    (function(){
+      const items=document.querySelectorAll('.news-list-item');
+      const now=Date.now();
+      const week=7*24*60*60*1000;
+      const day=24*60*60*1000;
+      items.forEach(li=>{
+        const timeEl=li.querySelector('.news-list-date');
+        if(!timeEl) return;
+        const txt=timeEl.textContent.trim();
+        const m=txt.match(/(\d{4})\.(\d{2})\.(\d{2})/);
+        if(!m) return;
+        const t=new Date(m[1]+'-'+m[2]+'-'+m[3]+'T00:00:00+09:00').getTime();
+        if(isNaN(t)) return;
+        const age=now-t;
+        if(age<=week && age>=-day){ li.classList.add('is-new'); }
+      });
+    })();
+  </script>
 </body>
 </html>
