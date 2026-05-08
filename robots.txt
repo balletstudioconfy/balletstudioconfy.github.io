@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /card/
+Disallow: /scan/
 
 Sitemap: https://ballet.confy.co.jp/sitemap.xml
