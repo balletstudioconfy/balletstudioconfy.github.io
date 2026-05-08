@@ -2349,6 +2349,19 @@
 
 
 
+
+    /* NEW badge for recent NEWS items (within 7 days) */
+    .news-list-item.is-new .news-list-title::after{
+      content:"New";
+      font-family:'Cormorant Garamond', serif;
+      font-style:italic;
+      font-weight:500;
+      color:var(--gold);
+      margin-left:.55em;
+      font-size:.82em;
+      letter-spacing:.04em;
+      vertical-align:.05em;
+    }
 </style>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-PBHFPE4RL8"></script>
@@ -2457,17 +2470,17 @@
       ⚠️ 一覧ページ news/index.html にも同じ内容を必ず追加してください
       ============================================================ -->
       <li class="news-list-item">
-        <time class="news-list-date">2026.05.04</time>
+        <time class="news-list-date">2026.05.09</time>
         <span class="news-list-cat">お知らせ</span>
         <span class="news-list-title">公式サイトを公開しました</span>
       </li>
       <li class="news-list-item">
-        <time class="news-list-date">2026.05.04</time>
+        <time class="news-list-date">2026.05.09</time>
         <span class="news-list-cat">お知らせ</span>
         <span class="news-list-title">体験レッスンのご案内 — 大人クラスは予約不要、お子さまは予約制</span>
       </li>
       <li class="news-list-item">
-        <time class="news-list-date">2026.05.04</time>
+        <time class="news-list-date">2026.05.09</time>
         <span class="news-list-cat">お知らせ</span>
         <span class="news-list-title">ご相談・お問い合わせは LINE 公式アカウントよりお気軽に</span>
       </li>
@@ -3887,5 +3900,26 @@ window.__teachers = {
 })();
 </script>
 
+
+  <script>
+    /* NEW badge auto-tagger: items within 7 days get .is-new */
+    (function(){
+      const items=document.querySelectorAll('.news-list-item');
+      const now=Date.now();
+      const week=7*24*60*60*1000;
+      const day=24*60*60*1000;
+      items.forEach(li=>{
+        const timeEl=li.querySelector('.news-list-date');
+        if(!timeEl) return;
+        const txt=timeEl.textContent.trim();
+        const m=txt.match(/(\d{4})\.(\d{2})\.(\d{2})/);
+        if(!m) return;
+        const t=new Date(m[1]+'-'+m[2]+'-'+m[3]+'T00:00:00+09:00').getTime();
+        if(isNaN(t)) return;
+        const age=now-t;
+        if(age<=week && age>=-day){ li.classList.add('is-new'); }
+      });
+    })();
+  </script>
 </body>
 </html>
