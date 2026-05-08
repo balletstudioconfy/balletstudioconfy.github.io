@@ -781,6 +781,24 @@
     aspect-ratio: 4/3;
     background: linear-gradient(135deg, var(--bg-blue) 0%, var(--bg-blue-deep) 100%);
     position: relative;
+    overflow: hidden;
+  }
+  .event-image::before {
+    content: '';
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    width: 32px;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.55;
+  }
+  .event-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 75% 25%, rgba(201,169,97,0.10) 0%, transparent 55%);
+    pointer-events: none;
   }
   .event-cat-tag {
     position: absolute;
@@ -2071,13 +2089,13 @@
     <div class="event-grid" style="grid-template-columns: repeat(2, 1fr);">
       <article class="event-card">
         <div class="event-image"><span class="event-cat-tag tag-recital">発表会</span></div>
-        <time class="event-date">2026.07</time>
+        <time class="event-date">Coming Soon</time>
         <h3>第1回 Ballet Studio CONFY 発表会</h3>
         <p>準備中。詳細は確定次第ご案内いたします。</p>
       </article>
       <article class="event-card">
         <div class="event-image"><span class="event-cat-tag tag-workshop">ワークショップ</span></div>
-        <time class="event-date">2026.08</time>
+        <time class="event-date">Coming Soon</time>
         <h3>夏休み特別ワークショップ</h3>
         <p>準備中。お子さま向けの特別レッスンを企画しています。</p>
       </article>

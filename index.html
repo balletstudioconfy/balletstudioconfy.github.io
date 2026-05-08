@@ -783,6 +783,24 @@
     aspect-ratio: 4/3;
     background: linear-gradient(135deg, var(--bg-blue) 0%, var(--bg-blue-deep) 100%);
     position: relative;
+    overflow: hidden;
+  }
+  .event-image::before {
+    content: '';
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    width: 32px;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.55;
+  }
+  .event-image::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 75% 25%, rgba(201,169,97,0.10) 0%, transparent 55%);
+    pointer-events: none;
   }
   .event-cat-tag {
     position: absolute;
@@ -2250,13 +2268,13 @@
     <div class="event-grid reveal-stagger" data-reveal-stagger="true">
       <article class="event-card">
         <div class="event-image"><span class="event-cat-tag tag-recital">発表会</span></div>
-        <time class="event-date">2026.07</time>
+        <time class="event-date">Coming Soon</time>
         <h3>第1回 Ballet Studio CONFY 発表会</h3>
         <p>準備中。詳細は確定次第ご案内いたします。</p>
       </article>
       <article class="event-card">
         <div class="event-image"><span class="event-cat-tag tag-workshop">ワークショップ</span></div>
-        <time class="event-date">2026.08</time>
+        <time class="event-date">Coming Soon</time>
         <h3>夏休み特別ワークショップ</h3>
         <p>準備中。お子さま向けの特別レッスンを企画しています。</p>
       </article>
@@ -2849,6 +2867,17 @@
       講師カードをクリック／タップすると、プロフィール詳細とプライベートレッスン情報が表示されます。<br>
       <strong style="color:var(--text-dark);">プライベートレッスンのご予約は、各講師のプロフィールよりお手続きいただけます。</strong>
     </p>
+
+    <!-- 講師たちの言葉 → blog/ への動線 -->
+    <div style="margin-top: 80px; padding-top: 56px; border-top: 1px solid var(--silver-light); text-align: center;">
+      <span class="section-label">Voices from teachers</span>
+      <h3 style="font-family: 'Noto Serif JP', serif; font-size: 26px; font-weight: 500; margin-top: 16px; margin-bottom: 16px; letter-spacing: 0.04em; color: var(--text-dark);">講師たちの言葉</h3>
+      <p style="font-size: 14px; color: var(--text-muted); line-height: 2; margin-bottom: 28px;">
+        レッスン現場の声、上達への想い、講師たちの日常を綴ります。<br>
+        人柄から教室を選びたい方へ。
+      </p>
+      <a href="blog/" class="btn-ghost" style="display: inline-flex; padding: 14px 28px;">講師ブログを読む →</a>
+    </div>
   </div>
 </section>
 
