@@ -227,7 +227,9 @@
   }
 
   html {
-    overflow-x: hidden; scroll-behavior: smooth; }
+    /* overflow-x: hidden を削除：position:sticky を壊すため。
+       水平スクロール防止は body 側＋各セクション側で対応 */
+    scroll-behavior: smooth; }
   body {
     overflow-x: hidden;
     font-family: 'Noto Sans JP', 'Inter', sans-serif;
@@ -1255,6 +1257,10 @@
     letter-spacing: 0.05em;
     margin-bottom: 40px;
     color: var(--text-dark);
+    /* 和文句読点（、。）の右側余白を視覚補正：palt 1 でプロポーショナルに */
+    font-feature-settings: "palt" 1;
+    /* 句読点で行末が左寄りに見える問題を補正（モダンブラウザ対応） */
+    text-spacing-trim: trim-end;
   }
   .hero h1 em {
     font-style: normal;
