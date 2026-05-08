@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ballet.confy.co.jp/sitemap.xml
