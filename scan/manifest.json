@@ -1,0 +1,16 @@
+{
+  "name": "CONFY 会員カードスキャン",
+  "short_name": "CONFY出席",
+  "description": "Ballet Studio CONFY の会員自動チェックイン",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#0F1B2D",
+  "icons": [
+    {
+      "src": "icon-180.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ]
+}

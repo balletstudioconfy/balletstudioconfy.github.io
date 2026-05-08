@@ -1,0 +1,12 @@
+{
+  "name": "CONFY 会員カード",
+  "short_name": "CONFY会員",
+  "description": "Ballet Studio CONFY の会員カード",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#FAF7F0",
+  "theme_color": "#0F1B2D",
+  "icons": [
+    { "src": "icon-180.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}
