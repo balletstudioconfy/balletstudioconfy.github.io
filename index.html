@@ -779,66 +779,75 @@
     border-color: var(--secondary);
     transform: translateY(-2px);
   }
-  .event-image {
-    aspect-ratio: 4/3;
-    background: linear-gradient(135deg, var(--bg-blue) 0%, var(--bg-blue-deep) 100%);
-    position: relative;
-    overflow: hidden;
+  /* ===== EVENT CARD: 写真なし永続デザイン（D案）===== */
+  .event-card {
+    background: linear-gradient(180deg, var(--bg-blue) 0%, var(--bg-white) 100%);
+    border: 1px solid var(--silver-light);
+    padding: 32px 24px 28px;
+    display: flex;
+    flex-direction: column;
+    min-height: 320px;
+    transition: transform 0.3s, box-shadow 0.3s;
   }
-  .event-image::before {
-    content: '';
-    position: absolute;
-    top: 24px;
-    left: 24px;
-    width: 32px;
-    height: 1px;
-    background: var(--gold);
-    opacity: 0.55;
+  .event-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(28,28,26,0.06);
   }
-  .event-image::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at 75% 25%, rgba(201,169,97,0.10) 0%, transparent 55%);
-    pointer-events: none;
-  }
-  .event-cat-tag {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: var(--primary);
-    color: white;
-    text-align: center;
-    padding: 8px;
-    font-size: 12px;
-    letter-spacing: 0.15em;
-    font-weight: 500;
-  }
-  .event-cat-tag.tag-recital { background: var(--text-dark); }
-  .event-cat-tag.tag-workshop { background: var(--primary); }
-  .event-cat-tag.tag-info { background: var(--text-mid); }
-  .event-date {
-    display: block;
-    padding: 16px 20px 4px;
+  .event-cat-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
     font-family: 'Inter', sans-serif;
     font-size: 11px;
-    color: var(--text-muted);
-    letter-spacing: 0.1em;
+    letter-spacing: 0.22em;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+  .event-cat-label::before {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 1px;
+    background: currentColor;
+  }
+  .event-cat-label.tag-recital { color: var(--text-dark); }
+  .event-cat-label.tag-workshop { color: var(--primary); }
+  .event-cat-label.tag-info { color: var(--gold); }
+
+  .event-headline {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 28px 0 24px;
+    min-height: 90px;
+  }
+  .event-headline-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 38px;
+    font-weight: 500;
+    color: var(--text-dark);
+    letter-spacing: 0.01em;
+    line-height: 1.1;
+    text-align: center;
   }
   .event-card h3 {
-    padding: 0 20px;
     font-family: 'Noto Serif JP', serif;
     font-size: 16px;
     font-weight: 500;
-    margin-bottom: 8px;
-    line-height: 1.5;
+    margin-bottom: 10px;
+    line-height: 1.55;
+    color: var(--text-dark);
   }
   .event-card p {
-    padding: 0 20px 20px;
     font-size: 12px;
     color: var(--text-muted);
     line-height: 1.9;
+  }
+  @media (max-width: 640px) {
+    .event-card { min-height: 280px; padding: 28px 20px 24px; }
+    .event-headline-text { font-size: 32px; }
   }
 
   /* ===== STICKY CTA (mobile + desktop after scroll) ===== */
@@ -2261,32 +2270,32 @@
 <section class="block" id="event">
   <div class="container">
     <span class="section-label">Event</span>
-    <h2 class="section-title" data-reveal="true">イベント・公演</h2>
+    <h2 class="section-title" data-reveal="true">イベント</h2>
     <p class="section-lead">
-      発表会・特別ワークショップ・公演情報をお知らせします。
+      発表会・ワークショップ・体験など、教室のイベント情報をお届けします。
     </p>
     <div class="event-grid reveal-stagger" data-reveal-stagger="true">
       <article class="event-card">
-        <div class="event-image"><span class="event-cat-tag tag-recital">発表会</span></div>
-        <time class="event-date">Coming Soon</time>
+        <span class="event-cat-label tag-recital">発表会</span>
+        <div class="event-headline"><span class="event-headline-text">Coming Soon</span></div>
         <h3>第1回 Ballet Studio CONFY 発表会</h3>
         <p>準備中。詳細は確定次第ご案内いたします。</p>
       </article>
       <article class="event-card">
-        <div class="event-image"><span class="event-cat-tag tag-workshop">ワークショップ</span></div>
-        <time class="event-date">Coming Soon</time>
+        <span class="event-cat-label tag-workshop">ワークショップ</span>
+        <div class="event-headline"><span class="event-headline-text">Coming Soon</span></div>
         <h3>夏休み特別ワークショップ</h3>
         <p>準備中。お子さま向けの特別レッスンを企画しています。</p>
       </article>
       <article class="event-card">
-        <div class="event-image"><span class="event-cat-tag tag-info">入会</span></div>
-        <time class="event-date">2026.05</time>
+        <span class="event-cat-label tag-info">入会</span>
+        <div class="event-headline"><span class="event-headline-text">2026.05</span></div>
         <h3>2026年度 入会受付中</h3>
         <p>キッズ・ジュニア・大人、全クラスにて受付中です。体験レッスンよりお気軽にどうぞ。</p>
       </article>
       <article class="event-card">
-        <div class="event-image"><span class="event-cat-tag tag-info">体験</span></div>
-        <time class="event-date">通年</time>
+        <span class="event-cat-label tag-info">体験</span>
+        <div class="event-headline"><span class="event-headline-text">通年</span></div>
         <h3>ご相談・体験のご案内</h3>
         <p>ご相談・お問い合わせは公式LINEまでお気軽に。一人ひとりに丁寧にお応えします。</p>
       </article>
@@ -2850,16 +2859,16 @@
         <div class="reading">ないとう あみ</div>
         <div class="teacher-card-cta">プロフィールを見る →</div>
       </button>
-      <button class="teacher-card" type="button" data-teacher="nakata">
-        <div class="teacher-img" style="background-image: url('assets/teacher_nakata_3x4.jpg');"></div>
-        <h4>中田 彩晴</h4>
-        <div class="reading">なかた いろは</div>
-        <div class="teacher-card-cta">プロフィールを見る →</div>
-      </button>
       <button class="teacher-card" type="button" data-teacher="suzuki">
         <div class="teacher-img" style="background-image: url('assets/teacher_suzuki_3x4.jpg');"></div>
         <h4>鈴木 千聖</h4>
         <div class="reading">すずき ちさと</div>
+        <div class="teacher-card-cta">プロフィールを見る →</div>
+      </button>
+      <button class="teacher-card" type="button" data-teacher="nakata">
+        <div class="teacher-img" style="background-image: url('assets/teacher_nakata_3x4.jpg');"></div>
+        <h4>中田 彩晴</h4>
+        <div class="reading">なかた いろは</div>
         <div class="teacher-card-cta">プロフィールを見る →</div>
       </button>
     </div>
@@ -2890,32 +2899,31 @@
     <p class="section-lead">
       実際にレッスンに通われている方々のお声をご紹介します。
     </p>
-    <div class="voice-grid reveal-stagger" data-reveal-stagger="true">
-      <article class="voice-card">
-        <div class="voice-quote-mark">"</div>
-        <p class="voice-text">
-          大人になってから一度バレエをやってみたい、と思いつつ、教室の敷居が高く感じて踏み出せずにいました。CONFYのスタートクラスは「ゼロから」をいい意味で前提にしてくれていて、ストレッチから身体の使い方まで、急かされずに進められるのが心地よくて。半年経って、姿勢が変わったと言われました。
-        </p>
-        <div class="voice-attribution">— 大人スタートクラス・40代女性</div>
-      </article>
-      <article class="voice-card">
-        <div class="voice-quote-mark">"</div>
-        <p class="voice-text">
-          学生時代に習っていたバレエを、20年ぶりに再開しました。最初は体が動かないことに焦っていたのですが、講師の方が「焦らないで、戻ってきた感覚を大切に」と。今では週2回のレッスンが生活の真ん中になっています。
-        </p>
-        <div class="voice-attribution">— 大人初級クラス・30代女性</div>
-      </article>
-      <article class="voice-card">
-        <div class="voice-quote-mark">"</div>
-        <p class="voice-text">
-          娘がキッズクラスに通い始めて1年。挨拶や立ち姿から丁寧に教えていただけて、家でも自然と背筋が伸びるようになりました。本人がいきいきと通っているのが、なによりの嬉しさです。
-        </p>
-        <div class="voice-attribution">— キッズクラス保護者・娘さん5歳</div>
-      </article>
+
+    <!-- ===== VOICE プレースホルダー（実声収集まで）=====
+         実際の声が集まり次第、以下のテンプレで <article class="voice-card"> を追加。
+         「掲載許諾済み」文言は本人の許諾書面を確認できる声のみ載せる。
+    ────────────────────────────────────────────
+    <article class="voice-card">
+      <div class="voice-quote-mark">"</div>
+      <p class="voice-text">
+        本物のお声をここに記載
+      </p>
+      <div class="voice-attribution">— クラス名・属性</div>
+    </article>
+    ============================================================ -->
+
+    <div style="max-width: 720px; margin: 48px auto 0; padding: 56px 32px; background: var(--bg-blue); border: 1px solid var(--silver-light); text-align: center;">
+      <div style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 28px; color: var(--text-mid); margin-bottom: 24px; letter-spacing: 0.02em;">Coming Soon</div>
+      <p style="font-size: 14px; color: var(--text-muted); line-height: 2.1;">
+        現在、受講者の方々からのお声を<br>
+        順次掲載予定です。
+      </p>
+      <p style="font-size: 13px; color: var(--text-light); line-height: 2; margin-top: 20px;">
+        ご本人の許諾を得たうえで、<br>
+        心からのメッセージのみをご紹介します。
+      </p>
     </div>
-    <p class="price-note" style="text-align:center; margin-top:32px; font-style: italic;">
-      ※ 掲載は許諾済みです。順次、実際の写真と合わせて更新してまいります。
-    </p>
   </div>
 </section>
 

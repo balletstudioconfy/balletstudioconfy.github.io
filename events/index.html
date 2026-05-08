@@ -777,66 +777,75 @@
     border-color: var(--secondary);
     transform: translateY(-2px);
   }
-  .event-image {
-    aspect-ratio: 4/3;
-    background: linear-gradient(135deg, var(--bg-blue) 0%, var(--bg-blue-deep) 100%);
-    position: relative;
-    overflow: hidden;
+  /* ===== EVENT CARD: 写真なし永続デザイン（D案）===== */
+  .event-card {
+    background: linear-gradient(180deg, var(--bg-blue) 0%, var(--bg-white) 100%);
+    border: 1px solid var(--silver-light);
+    padding: 32px 24px 28px;
+    display: flex;
+    flex-direction: column;
+    min-height: 320px;
+    transition: transform 0.3s, box-shadow 0.3s;
   }
-  .event-image::before {
-    content: '';
-    position: absolute;
-    top: 24px;
-    left: 24px;
-    width: 32px;
-    height: 1px;
-    background: var(--gold);
-    opacity: 0.55;
+  .event-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(28,28,26,0.06);
   }
-  .event-image::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at 75% 25%, rgba(201,169,97,0.10) 0%, transparent 55%);
-    pointer-events: none;
-  }
-  .event-cat-tag {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: var(--primary);
-    color: white;
-    text-align: center;
-    padding: 8px;
-    font-size: 12px;
-    letter-spacing: 0.15em;
-    font-weight: 500;
-  }
-  .event-cat-tag.tag-recital { background: var(--text-dark); }
-  .event-cat-tag.tag-workshop { background: var(--primary); }
-  .event-cat-tag.tag-info { background: var(--text-mid); }
-  .event-date {
-    display: block;
-    padding: 16px 20px 4px;
+  .event-cat-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
     font-family: 'Inter', sans-serif;
     font-size: 11px;
-    color: var(--text-muted);
-    letter-spacing: 0.1em;
+    letter-spacing: 0.22em;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+  .event-cat-label::before {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 1px;
+    background: currentColor;
+  }
+  .event-cat-label.tag-recital { color: var(--text-dark); }
+  .event-cat-label.tag-workshop { color: var(--primary); }
+  .event-cat-label.tag-info { color: var(--gold); }
+
+  .event-headline {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 28px 0 24px;
+    min-height: 90px;
+  }
+  .event-headline-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 38px;
+    font-weight: 500;
+    color: var(--text-dark);
+    letter-spacing: 0.01em;
+    line-height: 1.1;
+    text-align: center;
   }
   .event-card h3 {
-    padding: 0 20px;
     font-family: 'Noto Serif JP', serif;
     font-size: 16px;
     font-weight: 500;
-    margin-bottom: 8px;
-    line-height: 1.5;
+    margin-bottom: 10px;
+    line-height: 1.55;
+    color: var(--text-dark);
   }
   .event-card p {
-    padding: 0 20px 20px;
     font-size: 12px;
     color: var(--text-muted);
     line-height: 1.9;
+  }
+  @media (max-width: 640px) {
+    .event-card { min-height: 280px; padding: 28px 20px 24px; }
+    .event-headline-text { font-size: 32px; }
   }
 
   /* ===== STICKY CTA (mobile + desktop after scroll) ===== */
@@ -2079,8 +2088,8 @@
   <div class="container">
     <a href="../" class="page-back-link">← トップへ戻る</a>
     <span class="section-label">Event</span>
-    <h1>イベント・公演</h1>
-    <p class="lead">発表会・特別ワークショップ・公演情報をお知らせします。</p>
+    <h1>イベント</h1>
+    <p class="lead">発表会・ワークショップ・体験など、教室のイベント情報をお届けします。</p>
   </div>
 </section>
 
@@ -2088,26 +2097,26 @@
   <div class="container">
     <div class="event-grid" style="grid-template-columns: repeat(2, 1fr);">
       <article class="event-card">
-        <div class="event-image"><span class="event-cat-tag tag-recital">発表会</span></div>
-        <time class="event-date">Coming Soon</time>
+        <span class="event-cat-label tag-recital">発表会</span>
+        <div class="event-headline"><span class="event-headline-text">Coming Soon</span></div>
         <h3>第1回 Ballet Studio CONFY 発表会</h3>
         <p>準備中。詳細は確定次第ご案内いたします。</p>
       </article>
       <article class="event-card">
-        <div class="event-image"><span class="event-cat-tag tag-workshop">ワークショップ</span></div>
-        <time class="event-date">Coming Soon</time>
+        <span class="event-cat-label tag-workshop">ワークショップ</span>
+        <div class="event-headline"><span class="event-headline-text">Coming Soon</span></div>
         <h3>夏休み特別ワークショップ</h3>
         <p>準備中。お子さま向けの特別レッスンを企画しています。</p>
       </article>
       <article class="event-card">
-        <div class="event-image"><span class="event-cat-tag tag-info">入会</span></div>
-        <time class="event-date">2026.05</time>
+        <span class="event-cat-label tag-info">入会</span>
+        <div class="event-headline"><span class="event-headline-text">2026.05</span></div>
         <h3>2026年度 入会受付中</h3>
         <p>キッズ・ジュニア・大人、全クラスにて受付中です。体験レッスンよりお気軽にどうぞ。</p>
       </article>
       <article class="event-card">
-        <div class="event-image"><span class="event-cat-tag tag-info">体験</span></div>
-        <time class="event-date">通年</time>
+        <span class="event-cat-label tag-info">体験</span>
+        <div class="event-headline"><span class="event-headline-text">通年</span></div>
         <h3>ご相談・体験のご案内</h3>
         <p>ご相談・お問い合わせは公式LINEまでお気軽に。一人ひとりに丁寧にお応えします。</p>
       </article>
