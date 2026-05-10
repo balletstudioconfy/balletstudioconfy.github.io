@@ -78,7 +78,8 @@
     justify-content: space-between;
   }
   @media (max-width: 768px) { .header-inner { padding: 0 24px; } }
-  .site-logo-link { display: inline-flex; align-items: center; }
+  .site-logo-link { display: inline-flex; align-items: center; border-bottom: none !important; }
+  .site-logo-link:hover, .site-logo-link:focus, .site-logo-link:active, .site-logo-link:visited { border-bottom: none !important; }
   .site-logo-img { height: 38px; width: auto; display: block; }
   @media (max-width: 768px) { .site-logo-img { height: 32px; } }
   .header-back { font-family: 'Inter', sans-serif; font-size: 12px; letter-spacing: 0.16em; color: var(--text-muted); }
