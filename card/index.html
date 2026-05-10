@@ -434,5 +434,5 @@
       document.getElementById('qr').src = qrUrl;
     }
   </script>
-</body>
+<script>(function(){var STORAGE_KEY='confy_card_v1';var KEYS=['id','member','name','name_en','furigana','kana','level'];var url=new URLSearchParams(location.search);var fromUrl={};var hasUrlData=false;KEYS.forEach(function(k){var v=url.get(k);if(v){fromUrl[k]=v;hasUrlData=true;}});if(hasUrlData){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(fromUrl));}catch(e){}return;}var stored=null;try{var raw=localStorage.getItem(STORAGE_KEY);if(raw)stored=JSON.parse(raw);}catch(e){}if(!stored)return;var newUrl=new URLSearchParams();KEYS.forEach(function(k){if(stored[k])newUrl.set(k,stored[k]);});var newSearch=newUrl.toString();if(newSearch){history.replaceState(null,'','?'+newSearch);location.reload();}})();</script></body>
 </html>
