@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>【プレビュー】C案｜Ballet Studio CONFY</title>
+<link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Inter:wght@300;400;500;600&family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --primary: #428EDA;
+  --primary-dark: #2F73B8;
+  --text-dark: #1C1C1A;
+  --text-mid: #3A3530;
+  --text-muted: #6B645A;
+  --text-light: #9E978B;
+  --bg-white: #F8F6F2;
+  --bg-blue: #EFEAE0;
+  --silver: #D8D2C4;
+  --silver-light: #E8E2D8;
+  --beige: #DDD4C2;
+  --gold: #C9A961;
+}
+body { font-family: 'Noto Sans JP', 'Inter', sans-serif; font-weight: 300; line-height: 1.8; color: var(--text-dark); background: var(--bg-white); -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+
+/* PREVIEW BANNER */
+.preview-banner {
+  background: #FFEEAA;
+  color: #6B5A1F;
+  padding: 10px 24px;
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  border-bottom: 1px solid #E0C870;
+}
+.preview-banner strong { color: #4A3D1A; }
+
+/* HEADER */
+header { position: sticky; top: 36px; z-index: 100; background: var(--bg-white); border-bottom: 1px solid var(--silver-light); padding: 18px 0; }
+.header-inner { max-width: 1280px; margin: 0 auto; padding: 0 48px; display: flex; align-items: center; justify-content: space-between; }
+.brand { font-family: 'Cormorant Garamond', serif; font-style: italic; }
+.brand-en { font-size: 11px; color: var(--gold); letter-spacing: 0.2em; display: block; line-height: 1; }
+.brand-name { font-size: 24px; color: var(--gold); letter-spacing: 0.04em; line-height: 1.2; margin-top: 2px; }
+.nav { display: flex; align-items: center; gap: 28px; font-size: 13px; color: var(--text-dark); }
+.nav a:hover { color: var(--primary); }
+.nav .cta-trial { background: var(--primary); color: white; padding: 10px 18px; font-size: 12px; letter-spacing: 0.05em; }
+.nav .cta-trial:hover { background: var(--primary-dark); color: white; }
+.nav .cta-line { background: transparent; color: var(--text-dark); padding: 10px 18px; font-size: 12px; letter-spacing: 0.05em; border: 1px solid var(--silver); }
+
+/* HERO */
+.hero { padding: 80px 48px 100px; background: linear-gradient(180deg, var(--bg-white) 0%, var(--bg-blue) 100%); position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; top: 50%; left: 50%; width: 700px; height: 700px; border: 1px solid var(--silver); border-radius: 50%; transform: translate(-50%, -50%); opacity: 0.3; }
+.hero-inner { max-width: 1280px; margin: 0 auto; position: relative; z-index: 1; text-align: center; }
+.hero-eyebrow { display: inline-flex; align-items: center; gap: 12px; font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.32em; color: var(--primary); text-transform: uppercase; margin-bottom: 28px; }
+.hero-eyebrow::before, .hero-eyebrow::after { content: ''; width: 24px; height: 1px; background: var(--primary); }
+.hero h1 { font-family: 'Noto Serif JP', serif; font-size: 56px; font-weight: 500; line-height: 1.35; letter-spacing: 0.04em; margin-bottom: 28px; color: var(--text-dark); }
+.hero h1 em { font-style: normal; color: var(--primary); font-weight: 600; }
+.hero-sub { font-size: 15px; color: var(--text-mid); line-height: 2; max-width: 520px; margin: 0 auto 40px; }
+.hero-actions { display: flex; gap: 14px; justify-content: center; }
+.btn-primary { background: var(--primary); color: white; padding: 16px 36px; font-size: 14px; letter-spacing: 0.08em; border-radius: 999px; }
+.btn-ghost { background: white; color: var(--text-dark); padding: 16px 36px; font-size: 14px; letter-spacing: 0.08em; border: 1px solid var(--silver); border-radius: 999px; }
+.hero-micro { font-size: 12px; color: var(--text-muted); line-height: 1.9; margin-top: 28px; }
+
+/* COMMON */
+.section-label { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14px; color: var(--gold); letter-spacing: 0.18em; margin-bottom: 12px; display: block; }
+.section-title { font-family: 'Noto Serif JP', serif; font-size: 28px; font-weight: 500; color: var(--text-dark); letter-spacing: 0.05em; }
+.section-lead { font-size: 14px; color: var(--text-muted); line-height: 1.9; max-width: 640px; margin: 16px auto 0; }
+.view-all { font-family: 'Inter', sans-serif; font-size: 12px; color: var(--text-muted); letter-spacing: 0.2em; text-transform: uppercase; border-bottom: 1px solid var(--text-muted); padding-bottom: 2px; white-space: nowrap; }
+.section-header { margin-bottom: 48px; }
+.section-header-center { text-align: center; }
+.section-header-flex { display: flex; justify-content: space-between; align-items: flex-end; }
+
+/* NEWS */
+.news-section { padding: 80px 48px 80px; background: var(--bg-white); }
+.news-inner { max-width: 1080px; margin: 0 auto; }
+.news-pickup { background: var(--bg-blue); padding: 36px 40px; display: grid; grid-template-columns: auto 1fr auto; gap: 32px; align-items: center; margin-bottom: 32px; border-left: 3px solid var(--gold); }
+.news-pickup .pickup-label { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 13px; color: var(--gold); letter-spacing: 0.18em; text-transform: uppercase; writing-mode: vertical-rl; padding: 4px 0; }
+.news-pickup .pickup-body h3 { font-family: 'Noto Serif JP', serif; font-size: 22px; font-weight: 500; color: var(--text-dark); margin-bottom: 6px; letter-spacing: 0.04em; }
+.news-pickup .pickup-meta { font-family: 'Inter', sans-serif; font-size: 12px; color: var(--gold); letter-spacing: 0.08em; margin-bottom: 10px; }
+.news-pickup .pickup-desc { font-size: 13px; color: var(--text-mid); line-height: 1.9; max-width: 540px; }
+.news-pickup .pickup-cta { background: var(--primary); color: white; padding: 12px 24px; font-size: 12px; letter-spacing: 0.08em; border-radius: 999px; white-space: nowrap; }
+.news-list { list-style: none; padding: 0; }
+.news-list li { display: grid; grid-template-columns: 100px 88px 1fr auto; gap: 20px; padding: 18px 0; border-bottom: 1px solid var(--silver-light); align-items: center; }
+.news-list li:first-child { border-top: 1px solid var(--silver-light); }
+.news-list .date { font-family: 'Inter', sans-serif; font-size: 12px; color: var(--text-light); letter-spacing: 0.08em; }
+.news-list .tag { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 11px; padding: 4px 10px; border: 1px solid var(--silver); text-align: center; letter-spacing: 0.04em; white-space: nowrap; }
+.news-list .tag.tag-event { color: var(--gold); border-color: var(--gold); }
+.news-list .tag.tag-info { color: var(--text-mid); }
+.news-list .tag.tag-change { color: var(--primary); border-color: var(--primary); }
+.news-list .title { font-size: 13px; color: var(--text-dark); line-height: 1.7; }
+.news-list .arrow { font-size: 12px; color: var(--text-light); }
+.news-viewall-wrap { text-align: center; margin-top: 36px; }
+
+/* CONCEPT */
+.concept { padding: 80px 48px; background: var(--bg-white); text-align: center; }
+.concept-inner { max-width: 1280px; margin: 0 auto; }
+.concept-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 1px solid var(--silver-light); border-bottom: 1px solid var(--silver-light); }
+.concept-item { padding: 48px 32px; border-right: 1px solid var(--silver-light); position: relative; }
+.concept-item:last-child { border-right: none; }
+.concept-item::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 32px; height: 2px; background: var(--primary); }
+.concept-item .num { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 32px; color: var(--text-light); margin-bottom: 16px; }
+.concept-item h3 { font-family: 'Noto Serif JP', serif; font-size: 19px; font-weight: 500; color: var(--text-dark); margin-bottom: 14px; letter-spacing: 0.05em; }
+.concept-item p { font-size: 13px; color: var(--text-muted); line-height: 2; }
+
+/* CLASS */
+.class-section { padding: 100px 48px; background: var(--bg-blue); }
+.class-inner { max-width: 1280px; margin: 0 auto; }
+.class-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.class-card { background: white; border: 1px solid var(--silver-light); transition: all 0.3s; display: flex; flex-direction: column; padding: 40px 28px 32px; position: relative; }
+.class-card:hover { border-color: var(--beige); transform: translateY(-3px); }
+.class-card::before { content: ''; position: absolute; top: 0; left: 0; width: 48px; height: 2px; background: var(--primary); }
+.class-card .num { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 28px; color: var(--text-light); margin-bottom: 24px; letter-spacing: 0.06em; }
+.class-card h3 { font-family: 'Noto Serif JP', serif; font-size: 20px; font-weight: 500; color: var(--text-dark); margin-bottom: 8px; letter-spacing: 0.04em; }
+.class-card .target { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 12px; color: var(--gold); margin-bottom: 18px; letter-spacing: 0.06em; }
+.class-card p { font-size: 13px; color: var(--text-muted); line-height: 2; margin-bottom: 24px; flex-grow: 1; }
+.class-card .meta { font-family: 'Noto Serif JP', serif; font-size: 13px; color: var(--text-dark); border-top: 1px solid var(--silver-light); padding-top: 14px; margin-bottom: 18px; }
+.class-card .meta strong { font-weight: 500; }
+.class-cta { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; letter-spacing: 0.15em; color: var(--primary); text-transform: uppercase; }
+.class-cta::after { content: '→'; transition: transform 0.3s; }
+.class-cta:hover::after { transform: translateX(4px); }
+
+/* SCHEDULE */
+.schedule-section { padding: 100px 48px; background: var(--bg-white); }
+.schedule-inner { max-width: 1280px; margin: 0 auto; }
+.schedule-banner { background: white; border: 1px solid var(--gold); padding: 14px 28px; margin-bottom: 32px; display: flex; align-items: center; justify-content: space-between; gap: 20px; max-width: 880px; margin-left: auto; margin-right: auto; }
+.schedule-banner .banner-label { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 11px; color: var(--gold); letter-spacing: 0.18em; text-transform: uppercase; }
+.schedule-banner .banner-text { font-size: 13px; color: var(--text-dark); flex-grow: 1; margin-left: 16px; }
+.schedule-banner .banner-link { font-size: 12px; color: var(--primary); border-bottom: 1px solid var(--primary); padding-bottom: 1px; white-space: nowrap; }
+.schedule-header { text-align: center; margin-bottom: 36px; }
+.schedule-header .label { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14px; color: var(--gold); letter-spacing: 0.18em; margin-bottom: 12px; display: block; }
+.schedule-header h2 { font-family: 'Noto Serif JP', serif; font-size: 28px; font-weight: 500; color: var(--text-dark); margin-bottom: 12px; }
+.schedule-header p { font-size: 13px; color: var(--text-muted); }
+.schedule-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; max-width: 880px; margin: 0 auto 24px; }
+.schedule-day { background: var(--bg-blue); padding: 20px 12px; text-align: center; border: 1px solid var(--silver-light); cursor: pointer; transition: all 0.25s; user-select: none; }
+.schedule-day:hover { background: white; border-color: var(--beige); }
+.schedule-day.active { background: var(--primary); border-color: var(--primary); }
+.schedule-day.active .dow, .schedule-day.active .dow-jp, .schedule-day.active .count { color: white; }
+.schedule-day .dow { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 11px; color: var(--gold); letter-spacing: 0.1em; display: block; margin-bottom: 4px; }
+.schedule-day .dow-jp { font-family: 'Noto Serif JP', serif; font-size: 17px; color: var(--text-dark); display: block; margin-bottom: 8px; }
+.schedule-day .count { font-family: 'Noto Serif JP', serif; font-size: 22px; color: var(--primary); font-weight: 500; display: block; }
+.schedule-detail { max-width: 880px; margin: 0 auto; background: var(--bg-blue); border-left: 3px solid var(--primary); padding: 0; overflow: hidden; max-height: 0; transition: max-height 0.4s ease-out, padding 0.4s ease-out; }
+.schedule-detail.is-open { max-height: 800px; padding: 28px 32px; }
+.schedule-detail .detail-day-label { font-family: 'Noto Serif JP', serif; font-size: 18px; font-weight: 500; color: var(--text-dark); margin-bottom: 18px; padding-bottom: 12px; border-bottom: 1px solid var(--silver-light); }
+.schedule-detail .detail-day-label .en { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 12px; color: var(--gold); margin-left: 12px; letter-spacing: 0.08em; }
+.detail-list { list-style: none; padding: 0; margin: 0; }
+.detail-list li { display: grid; grid-template-columns: 110px 1fr 1fr; gap: 16px; padding: 10px 0; border-bottom: 1px dashed var(--silver-light); }
+.detail-list li:last-child { border-bottom: none; }
+.detail-list .t-time { font-family: 'Inter', sans-serif; font-size: 13px; color: var(--text-dark); font-weight: 500; }
+.detail-list .t-class { font-size: 13px; color: var(--text-dark); }
+.detail-list .t-teacher { font-size: 12px; color: var(--text-muted); }
+.schedule-cta-wrap { text-align: center; margin-top: 36px; }
+.schedule-cta-main { display: inline-block; background: var(--primary); color: white; padding: 14px 32px; font-size: 13px; letter-spacing: 0.08em; border-radius: 999px; }
+
+/* TEACHER */
+.teacher-section { padding: 100px 48px; background: var(--text-dark); color: white; }
+.teacher-inner { max-width: 1280px; margin: 0 auto; }
+.teacher-section .section-label { color: var(--gold); }
+.teacher-section .section-title { color: white; }
+.teacher-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr auto; gap: 28px; align-items: center; }
+.teacher-card { text-align: center; }
+.teacher-photo { aspect-ratio: 1 / 1.2; background-size: cover; background-position: center top; background-color: rgba(255,255,255,0.06); margin-bottom: 18px; }
+.teacher-photo.t-honda { background-image: url('/assets/teacher_honda_3x4.jpg'); }
+.teacher-photo.t-yamamoto { background-image: url('/assets/teacher_yamamoto_3x4.jpg'); }
+.teacher-photo.t-naito { background-image: url('/assets/teacher_naito_3x4.jpg'); }
+.teacher-photo.t-nakata { background-image: url('/assets/teacher_nakata_3x4.jpg'); }
+.teacher-photo.t-suzuki { background-image: url('/assets/teacher_suzuki_3x4.jpg'); background-position: center 35%; }
+.teacher-card h4 { font-family: 'Noto Serif JP', serif; font-size: 15px; font-weight: 500; color: white; margin-bottom: 4px; letter-spacing: 0.05em; }
+.teacher-card .reading { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 11px; color: rgba(255,255,255,0.5); letter-spacing: 0.1em; display: block; margin-bottom: 8px; }
+.teacher-card .role { font-size: 10px; color: rgba(255,255,255,0.55); line-height: 1.6; }
+.teacher-viewall { background: white; color: var(--text-dark); padding: 16px 22px; font-size: 11px; letter-spacing: 0.15em; border-radius: 999px; text-transform: uppercase; font-weight: 500; white-space: nowrap; }
+
+/* STUDIO */
+.studio-section { padding: 100px 48px; background: var(--bg-white); }
+.studio-inner { max-width: 1280px; margin: 0 auto; }
+.studio-header { text-align: center; margin-bottom: 56px; }
+.studio-header .label { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14px; color: var(--gold); letter-spacing: 0.18em; margin-bottom: 12px; display: block; }
+.studio-header h2 { font-family: 'Noto Serif JP', serif; font-size: 28px; font-weight: 500; color: var(--text-dark); margin-bottom: 16px; }
+.studio-header p { font-size: 14px; color: var(--text-muted); line-height: 1.9; max-width: 580px; margin: 0 auto; }
+.studio-features { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-top: 1px solid var(--silver-light); border-bottom: 1px solid var(--silver-light); }
+.studio-feature { padding: 40px 24px; border-right: 1px solid var(--silver-light); text-align: center; }
+.studio-feature:last-child { border-right: none; }
+.studio-feature .number { font-family: 'Noto Serif JP', serif; font-size: 36px; font-weight: 500; color: var(--text-dark); line-height: 1; margin-bottom: 4px; }
+.studio-feature .unit { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14px; color: var(--gold); letter-spacing: 0.08em; display: block; margin-bottom: 16px; }
+.studio-feature .label-title { font-family: 'Noto Serif JP', serif; font-size: 14px; color: var(--text-dark); font-weight: 500; margin-bottom: 6px; letter-spacing: 0.04em; }
+.studio-feature .desc { font-size: 11px; color: var(--text-muted); line-height: 1.7; }
+
+/* PRICE */
+.price-section { padding: 100px 48px; background: var(--bg-blue); }
+.price-inner { max-width: 1080px; margin: 0 auto; }
+.price-header { text-align: center; margin-bottom: 48px; }
+.price-header .label { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14px; color: var(--gold); letter-spacing: 0.18em; margin-bottom: 12px; display: block; }
+.price-header h2 { font-family: 'Noto Serif JP', serif; font-size: 28px; font-weight: 500; color: var(--text-dark); margin-bottom: 12px; }
+.price-header p { font-size: 13px; color: var(--text-muted); }
+.price-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.price-card { background: white; padding: 28px 24px; text-align: center; border: 1px solid var(--silver-light); }
+.price-card .price-label { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 12px; color: var(--gold); letter-spacing: 0.1em; margin-bottom: 12px; }
+.price-card .price-target { font-family: 'Noto Serif JP', serif; font-size: 15px; color: var(--text-dark); margin-bottom: 16px; font-weight: 500; }
+.price-card .price-value { font-family: 'Noto Serif JP', serif; font-size: 28px; font-weight: 500; color: var(--text-dark); margin-bottom: 6px; }
+.price-card .price-value small { font-size: 14px; color: var(--text-muted); font-weight: 300; }
+.price-card .price-unit { font-size: 11px; color: var(--text-muted); letter-spacing: 0.06em; }
+.price-cta-wrap { text-align: center; margin-top: 36px; }
+.price-note { font-size: 12px; color: var(--text-muted); margin-top: 24px; text-align: center; line-height: 1.9; }
+
+/* VOICE */
+.voice-section { padding: 100px 48px; background: var(--bg-white); }
+.voice-inner { max-width: 1280px; margin: 0 auto; }
+.voice-header { text-align: center; margin-bottom: 48px; }
+.voice-header .label { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14px; color: var(--gold); letter-spacing: 0.18em; margin-bottom: 12px; display: block; }
+.voice-header h2 { font-family: 'Noto Serif JP', serif; font-size: 28px; font-weight: 500; color: var(--text-dark); }
+.voice-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.voice-card { background: var(--bg-blue); padding: 36px 28px 32px; position: relative; display: flex; flex-direction: column; }
+.voice-quote { font-family: 'Cormorant Garamond', serif; font-size: 48px; color: var(--gold); line-height: 0.6; margin-bottom: 16px; }
+.voice-text { font-size: 13px; color: var(--text-dark); line-height: 2; margin-bottom: 24px; flex-grow: 1; }
+.voice-attr { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 12px; color: var(--text-muted); letter-spacing: 0.04em; padding-top: 12px; border-top: 1px solid var(--silver-light); }
+.voice-card.coming-soon { background: transparent; border: 1px dashed var(--silver); display: flex; align-items: center; justify-content: center; text-align: center; }
+.voice-card.coming-soon .placeholder { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 18px; color: var(--text-light); letter-spacing: 0.08em; }
+.voice-card.coming-soon .placeholder small { display: block; font-family: 'Noto Sans JP', sans-serif; font-style: normal; font-size: 11px; color: var(--text-light); margin-top: 6px; letter-spacing: 0; }
+
+/* FLOW */
+.flow-section { padding: 100px 48px; background: var(--bg-blue); }
+.flow-inner { max-width: 1280px; margin: 0 auto; }
+.flow-header { text-align: center; margin-bottom: 56px; }
+.flow-header .label { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14px; color: var(--gold); letter-spacing: 0.18em; margin-bottom: 12px; display: block; }
+.flow-header h2 { font-family: 'Noto Serif JP', serif; font-size: 28px; font-weight: 500; color: var(--text-dark); margin-bottom: 16px; }
+.flow-header p { font-size: 14px; color: var(--text-muted); line-height: 1.9; max-width: 580px; margin: 0 auto; }
+.flow-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
+.flow-step { background: white; padding: 32px 24px 28px; border-top: 2px solid var(--primary); position: relative; text-align: center; }
+.flow-step .step-num { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 36px; color: var(--primary); line-height: 1; margin-bottom: 14px; }
+.flow-step h3 { font-family: 'Noto Serif JP', serif; font-size: 15px; font-weight: 500; color: var(--text-dark); margin-bottom: 12px; letter-spacing: 0.04em; }
+.flow-step p { font-size: 12px; color: var(--text-muted); line-height: 1.9; }
+
+/* FAQ */
+.faq-section { padding: 100px 48px; background: var(--bg-white); }
+.faq-inner { max-width: 880px; margin: 0 auto; }
+.faq-header { text-align: center; margin-bottom: 48px; }
+.faq-header .label { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14px; color: var(--gold); letter-spacing: 0.18em; margin-bottom: 12px; display: block; }
+.faq-header h2 { font-family: 'Noto Serif JP', serif; font-size: 28px; font-weight: 500; color: var(--text-dark); margin-bottom: 16px; }
+.faq-header p { font-size: 14px; color: var(--text-muted); line-height: 1.9; }
+.faq-list { list-style: none; padding: 0; }
+.faq-item { border-bottom: 1px solid var(--silver-light); }
+.faq-item summary { padding: 20px 0; cursor: pointer; display: grid; grid-template-columns: 30px 1fr 30px; gap: 16px; align-items: center; font-family: 'Noto Serif JP', serif; font-size: 15px; color: var(--text-dark); letter-spacing: 0.04em; list-style: none; }
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary .q-mark { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 22px; color: var(--gold); }
+.faq-item summary .toggle { font-size: 20px; color: var(--text-light); transition: transform 0.3s; }
+.faq-item[open] summary .toggle { transform: rotate(45deg); }
+.faq-answer { padding: 0 0 24px 46px; font-size: 13px; color: var(--text-mid); line-height: 2; }
+
+/* ACCESS */
+.access-section { padding: 100px 48px; background: var(--bg-blue); }
+.access-inner { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.5fr; gap: 56px; align-items: start; }
+.access-info .label { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14px; color: var(--gold); letter-spacing: 0.18em; margin-bottom: 12px; display: block; }
+.access-info h2 { font-family: 'Noto Serif JP', serif; font-size: 28px; font-weight: 500; color: var(--text-dark); margin-bottom: 32px; }
+.access-info h3 { font-family: 'Noto Serif JP', serif; font-size: 16px; font-weight: 500; color: var(--text-dark); margin-bottom: 8px; }
+.access-info p { font-size: 13px; color: var(--text-mid); line-height: 1.9; margin-bottom: 20px; }
+.access-info ul { list-style: none; padding-left: 0; }
+.access-info ul li { font-size: 13px; color: var(--text-mid); line-height: 1.9; padding-left: 20px; position: relative; margin-bottom: 6px; }
+.access-info ul li::before { content: '・'; position: absolute; left: 0; color: var(--gold); }
+.access-map { aspect-ratio: 16 / 10; background: var(--bg-white); display: flex; align-items: center; justify-content: center; border: 1px solid var(--silver-light); }
+.access-map::after { content: 'Google Maps（埋込予定）'; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 13px; color: var(--text-light); letter-spacing: 0.08em; }
+
+/* TRIAL */
+.trial-section { padding: 80px 48px; background: var(--text-dark); color: white; text-align: center; }
+.trial-section h2 { font-family: 'Noto Serif JP', serif; font-size: 28px; font-weight: 500; margin-bottom: 16px; letter-spacing: 0.06em; }
+.trial-section p { font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.9; max-width: 560px; margin: 0 auto 36px; }
+.trial-actions { display: flex; gap: 14px; justify-content: center; }
+.trial-actions .btn-primary { background: white; color: var(--text-dark); }
+.trial-actions .btn-line { background: transparent; color: white; border: 1px solid rgba(255,255,255,0.3); padding: 16px 36px; font-size: 14px; letter-spacing: 0.08em; border-radius: 999px; }
+
+/* STICKY CTA */
+.sticky-cta { position: fixed; bottom: 24px; right: 24px; z-index: 50; background: var(--primary); color: white; padding: 14px 24px; border-radius: 999px; font-size: 12px; letter-spacing: 0.15em; box-shadow: 0 8px 24px rgba(0,0,0,0.15); transition: all 0.3s; opacity: 0; transform: translateY(20px); pointer-events: none; }
+.sticky-cta.is-visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.sticky-cta:hover { background: var(--text-dark); }
+@media (max-width: 768px) {
+  .sticky-cta { bottom: 16px; right: 16px; padding: 12px 20px; font-size: 11px; }
+}
+
+/* FOOTER */
+footer { background: var(--text-dark); color: rgba(255,255,255,0.5); padding: 56px 48px 32px; text-align: center; font-size: 11px; letter-spacing: 0.08em; }
+footer .footer-links { margin-bottom: 24px; }
+footer .footer-links a { color: rgba(255,255,255,0.6); margin: 0 14px; }
+
+/* MOBILE */
+@media (max-width: 1024px) {
+  .news-pickup { grid-template-columns: 1fr; gap: 16px; }
+  .news-pickup .pickup-label { writing-mode: horizontal-tb; }
+  .news-list li { grid-template-columns: 88px 1fr; gap: 12px; }
+  .news-list .tag { grid-column: 1; }
+  .news-list .date { grid-column: 1; }
+  .news-list .title { grid-column: 2; grid-row: 1 / span 2; }
+  .news-list .arrow { display: none; }
+  .class-grid, .flow-grid, .price-grid { grid-template-columns: 1fr 1fr; }
+  .teacher-grid { grid-template-columns: 1fr 1fr 1fr; }
+  .teacher-viewall { grid-column: span 3; justify-self: center; margin-top: 16px; }
+  .studio-features { grid-template-columns: 1fr 1fr; border: none; }
+  .studio-feature { border-right: none; border-bottom: 1px solid var(--silver-light); }
+  .studio-feature:nth-child(odd) { border-right: 1px solid var(--silver-light); }
+  .studio-feature:nth-last-child(-n+2) { border-bottom: none; }
+  .voice-grid { grid-template-columns: 1fr 1fr; }
+  .voice-card.coming-soon { display: none; }
+  .access-inner { grid-template-columns: 1fr; }
+  .schedule-grid { grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .schedule-day { padding: 14px 4px; }
+  .schedule-day .dow { font-size: 10px; }
+  .schedule-day .dow-jp { font-size: 14px; margin-bottom: 4px; }
+  .schedule-day .count { font-size: 18px; }
+  .detail-list li { grid-template-columns: 80px 1fr; }
+  .detail-list .t-teacher { grid-column: 2; padding-left: 0; }
+}
+@media (max-width: 768px) {
+  .header-inner { padding: 0 20px; flex-direction: column; gap: 16px; }
+  .nav { flex-wrap: wrap; gap: 12px; font-size: 11px; }
+  .nav .cta-trial, .nav .cta-line { padding: 8px 12px; font-size: 10px; }
+  .hero { padding: 60px 20px 80px; }
+  .hero h1 { font-size: 32px; }
+  .hero-actions { flex-direction: column; align-items: stretch; }
+  .news-section, .concept, .class-section, .schedule-section, .teacher-section, .studio-section, .price-section, .voice-section, .flow-section, .faq-section, .access-section, .trial-section { padding: 56px 20px; }
+  .news-pickup { padding: 24px; }
+  .concept-grid { grid-template-columns: 1fr; border: none; }
+  .concept-item { border-right: none; border-bottom: 1px solid var(--silver-light); padding: 32px 0; }
+  .concept-item:last-child { border-bottom: none; }
+  .class-grid, .voice-grid, .flow-grid, .price-grid { grid-template-columns: 1fr; gap: 14px; }
+  .teacher-grid { grid-template-columns: 1fr 1fr; }
+  .teacher-viewall { grid-column: span 2; }
+  .studio-features { grid-template-columns: 1fr; border: none; }
+  .studio-feature, .studio-feature:nth-child(odd) { border-right: none; border-bottom: 1px solid var(--silver-light); }
+  .studio-feature:last-child { border-bottom: none; }
+  .voice-card.coming-soon { display: none; }
+  .trial-actions { flex-direction: column; align-items: stretch; }
+  .section-title, .access-info h2, .voice-header h2, .studio-header h2, .schedule-header h2, .price-header h2, .flow-header h2, .faq-header h2, .trial-section h2 { font-size: 22px; }
+  .schedule-banner { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .schedule-banner .banner-text { margin-left: 0; }
+}
+</style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PBHFPE4RL8"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-PBHFPE4RL8');
+</script>
+</head>
+<body>
+
+<!-- PREVIEW BANNER -->
+<div class="preview-banner">
+  <strong>【プレビュー版】</strong> このページは検証用です。確認後、本番（/）に反映予定。
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <a href="/" class="brand">
+      <span class="brand-en">Ballet Studio</span>
+      <span class="brand-name">CONFY</span>
+    </a>
+    <nav class="nav">
+      <a href="#home">HOME</a>
+      <a href="#about">CONFYについて</a>
+      <a href="#class">クラス</a>
+      <a href="#teacher">講師紹介</a>
+      <a href="#studio">スタジオ</a>
+      <a href="#news">お知らせ</a>
+      <a href="#access">アクセス</a>
+      <a href="#trial" class="cta-trial">体験レッスンを予約する</a>
+      <a href="https://lin.ee/uGP7kES" class="cta-line" target="_blank" rel="noopener">LINEで相談する</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Tsukishima, Tokyo</div>
+    <h1>はじめての一歩も、<br><em>本気の挑戦も。</em></h1>
+    <p class="hero-sub">東京・月島のバレエスタジオ、Ballet Studio CONFY。<br>3歳のキッズから大人まで、一人ひとりのペースで、<br>確かな技術と表現を育てます。</p>
+    <div class="hero-actions">
+      <a href="#trial" class="btn-primary">体験レッスンを予約する</a>
+      <a href="#class" class="btn-ghost">クラスを見る</a>
+    </div>
+    <p class="hero-micro">大人クラスは予約不要・ご都合のよいときにお越しください。<br>お子さまのクラスは予約制でご案内します。</p>
+  </div>
+</section>
+
+<!-- NEWS & EVENTS -->
+<section class="news-section" id="news">
+  <div class="news-inner">
+    <div class="section-header section-header-center">
+      <span class="section-label">News &amp; Events</span>
+      <h2 class="section-title">お知らせ・イベント</h2>
+    </div>
+
+    <a href="/events/" class="news-pickup">
+      <div class="pickup-label">Pickup</div>
+      <div class="pickup-body">
+        <h3>6月のバリエーション会</h3>
+        <div class="pickup-meta">2026.06.06（土）13:10 – 14:10　／　講師：本田 千晃</div>
+        <p class="pickup-desc">『白鳥の湖』パドトロワより第Ⅰバリエーション。会員 ¥3,000 / ビジター ¥4,000。詳細はイベントページへ。</p>
+      </div>
+      <span class="pickup-cta">詳細を見る</span>
+    </a>
+
+    <ul class="news-list">
+      <li>
+        <span class="date">2026.05.10</span>
+        <span class="tag tag-change">変更</span>
+        <a href="/schedule-changes/" class="title">5月後半〜6月のスケジュール変更について</a>
+        <span class="arrow">→</span>
+      </li>
+      <li>
+        <span class="date">2026.03.28</span>
+        <span class="tag tag-info">お知らせ</span>
+        <a href="/news/" class="title">体験レッスンのご案内 — 大人クラスは予約不要、お子さまは予約制</a>
+        <span class="arrow">→</span>
+      </li>
+      <li>
+        <span class="date">2026.03.28</span>
+        <span class="tag tag-info">お知らせ</span>
+        <a href="https://lin.ee/uGP7kES" target="_blank" rel="noopener" class="title">ご相談・お問い合わせは LINE 公式アカウントよりお気軽に</a>
+        <span class="arrow">→</span>
+      </li>
+    </ul>
+
+    <div class="news-viewall-wrap">
+      <a href="/news/" class="view-all">View All</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONCEPT -->
+<section class="concept" id="about">
+  <div class="concept-inner">
+    <div class="section-header section-header-center">
+      <span class="section-label">About</span>
+      <h2 class="section-title">はじめての方から本格派まで、<br>一人ひとりに、丁寧に。</h2>
+      <p class="section-lead">Ballet Studio CONFYは、東京・月島のバレエスタジオ。はじめての方から本格的に学びたい方まで、一人ひとりの身体と目標に寄り添いながら、確かな基礎と表現力を育てます。</p>
+    </div>
+    <div class="concept-grid">
+      <div class="concept-item">
+        <div class="num">01</div>
+        <h3>丁寧さ</h3>
+        <p>教え方も、対応も、空間の質も。<br>基礎を大切に、ひとつひとつ丁寧にお伝えします。</p>
+      </div>
+      <div class="concept-item">
+        <div class="num">02</div>
+        <h3>自信を育てる</h3>
+        <p>上達を急がず、本人のペースで。<br>「できた」を一つずつ積み重ねていきます。</p>
+      </div>
+      <div class="concept-item">
+        <div class="num">03</div>
+        <h3>安心して通える</h3>
+        <p>はじめての方が萎縮せず、経験者が物足りなくならない。多様な方が、それぞれの本気で通える教室です。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CLASS -->
+<section class="class-section" id="class">
+  <div class="class-inner">
+    <div class="section-header section-header-flex">
+      <div>
+        <span class="section-label">Class</span>
+        <h2 class="section-title">クラス紹介</h2>
+      </div>
+      <a href="/#class" class="view-all">View All</a>
+    </div>
+    <div class="class-grid">
+      <div class="class-card">
+        <div class="num">01</div>
+        <h3>大人クラス</h3>
+        <div class="target">For Adults</div>
+        <p>はじめての方から経験者まで、６つのレベル別クラス。ご都合のよい時間にお越しください。</p>
+        <div class="meta"><strong>¥12,000〜</strong> / 月4回</div>
+        <a href="/#class-adult" class="class-cta">詳しく見る</a>
+      </div>
+      <div class="class-card">
+        <div class="num">02</div>
+        <h3>子供クラス</h3>
+        <div class="target">For Kids &amp; Juniors</div>
+        <p>3歳のキッズから高校生まで、年齢別５クラス。体験レッスン1回無料（キッズ・ジュニアA・B・S対象）。</p>
+        <div class="meta"><strong>¥8,000〜</strong> / 月謝</div>
+        <a href="/#class-junior" class="class-cta">詳しく見る</a>
+      </div>
+      <div class="class-card">
+        <div class="num">03</div>
+        <h3>プロ育成・中高生</h3>
+        <div class="target">Pro Development</div>
+        <p>コンクール出場、公演参加、バレエ団入団・海外留学を視野に。試験制の専門コース。</p>
+        <div class="meta"><strong>¥45,000</strong> / 月・フリー</div>
+        <a href="/#pro-development" class="class-cta">詳しく見る</a>
+      </div>
+      <div class="class-card">
+        <div class="num">04</div>
+        <h3>プライベートレッスン</h3>
+        <div class="target">Private Lesson</div>
+        <p>マンツーマンの個別指導。目的・レベルに合わせたオーダーメイド。料金は講師ごとに異なります。</p>
+        <div class="meta"><strong>講師ごと料金</strong> / 30分単位</div>
+        <a href="/teacher/" class="class-cta">講師から選ぶ</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCHEDULE -->
+<section class="schedule-section" id="schedule">
+  <div class="schedule-inner">
+    <a href="/schedule-changes/" class="schedule-banner">
+      <span class="banner-label">Update</span>
+      <span class="banner-text">5月後半〜6月のスケジュール変更・休講・特別クラスのお知らせ</span>
+      <span class="banner-link">詳細を見る →</span>
+    </a>
+
+    <div class="schedule-header">
+      <span class="label">Schedule</span>
+      <h2>週間スケジュール</h2>
+      <p>曜日をタップすると、その日のクラス時間割が表示されます。</p>
+    </div>
+
+    <div class="schedule-grid">
+      <div class="schedule-day" data-day="mon"><span class="dow">Mon</span><span class="dow-jp">月</span><span class="count">1</span></div>
+      <div class="schedule-day" data-day="tue"><span class="dow">Tue</span><span class="dow-jp">火</span><span class="count">4</span></div>
+      <div class="schedule-day" data-day="wed"><span class="dow">Wed</span><span class="dow-jp">水</span><span class="count">7</span></div>
+      <div class="schedule-day" data-day="thu"><span class="dow">Thu</span><span class="dow-jp">木</span><span class="count">3</span></div>
+      <div class="schedule-day" data-day="fri"><span class="dow">Fri</span><span class="dow-jp">金</span><span class="count">7</span></div>
+      <div class="schedule-day" data-day="sat"><span class="dow">Sat</span><span class="dow-jp">土</span><span class="count">7</span></div>
+      <div class="schedule-day" data-day="sun"><span class="dow">Sun</span><span class="dow-jp">日</span><span class="count">3</span></div>
+    </div>
+
+    <div class="schedule-detail" id="scheduleDetail">
+      <div class="detail-day-label" id="detailDayLabel">月曜 <span class="en">Monday</span></div>
+      <ul class="detail-list" id="detailList"></ul>
+    </div>
+
+    <div class="schedule-cta-wrap">
+      <a href="/schedule-changes/" class="schedule-cta-main">変更・休講・特別クラスはこちら</a>
+    </div>
+  </div>
+</section>
+
+<!-- TEACHER -->
+<section class="teacher-section" id="teacher">
+  <div class="teacher-inner">
+    <div class="section-header" style="margin-bottom: 40px;">
+      <span class="section-label">Teacher</span>
+      <h2 class="section-title">講師紹介</h2>
+    </div>
+    <div class="teacher-grid">
+      <div class="teacher-card">
+        <div class="teacher-photo t-honda"></div>
+        <h4>本田 千晃</h4>
+        <span class="reading">ほんだ ちあき</span>
+        <p class="role">BSC代表 / 元東京シティ・バレエ団</p>
+      </div>
+      <div class="teacher-card">
+        <div class="teacher-photo t-yamamoto"></div>
+        <h4>山本 怜</h4>
+        <span class="reading">やまもと れい</span>
+        <p class="role">元小林紀子バレエ・シアター</p>
+      </div>
+      <div class="teacher-card">
+        <div class="teacher-photo t-naito"></div>
+        <h4>内藤 亜仁</h4>
+        <span class="reading">ないとう あみ</span>
+        <p class="role">元東京シティ・バレエ団 ソリスト</p>
+      </div>
+      <div class="teacher-card">
+        <div class="teacher-photo t-nakata"></div>
+        <h4>中田 彩晴</h4>
+        <span class="reading">なかた いろは</span>
+        <p class="role">元東京バレエ団</p>
+      </div>
+      <div class="teacher-card">
+        <div class="teacher-photo t-suzuki"></div>
+        <h4>鈴木 千聖</h4>
+        <span class="reading">すずき ちさと</span>
+        <p class="role">元 NBA BALLET COMPANY</p>
+      </div>
+      <a href="/teacher/" class="teacher-viewall">講師一覧を見る</a>
+    </div>
+  </div>
+</section>
+
+<!-- STUDIO -->
+<section class="studio-section" id="studio">
+  <div class="studio-inner">
+    <div class="studio-header">
+      <span class="label">Studio</span>
+      <h2>スタジオ環境</h2>
+      <p>月島駅徒歩3分。集中できる、本格的な環境を用意しています。</p>
+    </div>
+    <div class="studio-features">
+      <div class="studio-feature">
+        <div class="number">110</div>
+        <span class="unit">㎡</span>
+        <div class="label-title">広々スタジオ</div>
+        <p class="desc">ゆったり踊れる広さ</p>
+      </div>
+      <div class="studio-feature">
+        <div class="number">25</div>
+        <span class="unit">名定員</span>
+        <div class="label-title">少人数制</div>
+        <p class="desc">一人ひとりに目が届く</p>
+      </div>
+      <div class="studio-feature">
+        <div class="number">3</div>
+        <span class="unit">min</span>
+        <div class="label-title">月島駅徒歩</div>
+        <p class="desc">2番出口から3分</p>
+      </div>
+      <div class="studio-feature">
+        <div class="number">11</div>
+        <span class="unit">classes</span>
+        <div class="label-title">クラス数</div>
+        <p class="desc">大人6 + 子ども5</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICE -->
+<section class="price-section" id="price">
+  <div class="price-inner">
+    <div class="price-header">
+      <span class="label">Price</span>
+      <h2>料金のご案内</h2>
+      <p>月謝制でご用意。表示価格はすべて税込みです。</p>
+    </div>
+    <div class="price-grid">
+      <div class="price-card">
+        <div class="price-label">Admission</div>
+        <div class="price-target">入会金</div>
+        <div class="price-value">¥15,000</div>
+        <div class="price-unit">はじめての方</div>
+      </div>
+      <div class="price-card">
+        <div class="price-label">For Adults</div>
+        <div class="price-target">大人クラス</div>
+        <div class="price-value">¥12,000<small>〜</small></div>
+        <div class="price-unit">月4回</div>
+      </div>
+      <div class="price-card">
+        <div class="price-label">For Kids</div>
+        <div class="price-target">キッズ・ジュニア</div>
+        <div class="price-value">¥8,000<small>〜</small></div>
+        <div class="price-unit">週1回</div>
+      </div>
+      <div class="price-card">
+        <div class="price-label">Visitor</div>
+        <div class="price-target">ビジター</div>
+        <div class="price-value">¥3,800</div>
+        <div class="price-unit">1回ドロップイン</div>
+      </div>
+    </div>
+    <p class="price-note">プロ育成コース ¥45,000 / プライベートレッスンは講師ごと料金 / 体験レッスン1回無料（キッズ・ジュニアA・B・S）</p>
+    <div class="price-cta-wrap">
+      <a href="/#price" class="view-all">料金詳細を見る</a>
+    </div>
+  </div>
+</section>
+
+<!-- VOICE -->
+<section class="voice-section" id="voice">
+  <div class="voice-inner">
+    <div class="voice-header">
+      <span class="label">Voice</span>
+      <h2>受講者の声</h2>
+    </div>
+    <div class="voice-grid">
+      <div class="voice-card">
+        <div class="voice-quote">"</div>
+        <p class="voice-text">レッスンを重ねる中で、少しずつ出来ることが増えて自信に繋がっています。先生が丁寧にご指導くださり、温かい雰囲気なので毎回通うのが楽しみです。年齢に関係なく楽しめるので「やってみたい」と思ったときがはじめどきだと思います。</p>
+        <p class="voice-attr">— 大人クラス会員さま（50代）</p>
+      </div>
+      <div class="voice-card">
+        <div class="voice-quote">"</div>
+        <p class="voice-text">毎回とても楽しそうに通っています。レッスン後はいつも清々しく、達成感に満ちた表情で帰ってくるので、親としても心から嬉しく感じています。先生やスタッフの皆様が親身に寄り添ってくださるので、安心してお任せできています。基礎から着実に、安心してレベルアップしていける教室です。</p>
+        <p class="voice-attr">— ジュニアクラス保護者さま</p>
+      </div>
+      <div class="voice-card coming-soon">
+        <div class="placeholder">Coming Soon<small>順次掲載予定</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FLOW -->
+<section class="flow-section" id="flow">
+  <div class="flow-inner">
+    <div class="flow-header">
+      <span class="label">Flow</span>
+      <h2>入会までの流れ</h2>
+      <p>ご相談 → 体験 → 入会 → スタートまで、5つのステップでご案内します。</p>
+    </div>
+    <div class="flow-grid">
+      <div class="flow-step">
+        <div class="step-num">01</div>
+        <h3>体験のご相談</h3>
+        <p>公式LINE・お問い合わせフォームから。大人クラスは予約不要。</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">02</div>
+        <h3>体験レッスン</h3>
+        <p>動きやすい服装でお越しください。所要時間：約60〜90分。</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">03</div>
+        <h3>ご入会のご相談</h3>
+        <p>レッスン後、雰囲気・ご質問を講師とゆっくり。強引な勧誘は一切ありません。</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">04</div>
+        <h3>入会手続き</h3>
+        <p>入会金 ¥15,000 と初月の月謝をお預かりします。</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">05</div>
+        <h3>レッスンスタート</h3>
+        <p>翌月から正式に。あなたのペースで、ゆっくり始めましょう。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section" id="faq">
+  <div class="faq-inner">
+    <div class="faq-header">
+      <span class="label">FAQ</span>
+      <h2>よくあるご質問</h2>
+      <p>ご入会前によくいただくご質問をまとめました。</p>
+    </div>
+    <ul class="faq-list">
+      <details class="faq-item">
+        <summary><span class="q-mark">Q</span><span>何歳から始められますか？</span><span class="toggle">+</span></summary>
+        <div class="faq-answer">3歳から始められるキッズクラスをご用意しています。年齢別にキッズ／ジュニアB／ジュニアA／Sクラスと進級していきます。体験レッスンは1回無料です。</div>
+      </details>
+      <details class="faq-item">
+        <summary><span class="q-mark">Q</span><span>体験レッスンは無料ですか？</span><span class="toggle">+</span></summary>
+        <div class="faq-answer">キッズ・ジュニアA・B・Sクラスは1回まで無料です。プロ育成コースは試験により入会判定。大人クラスはビジター1回 ¥3,800（ポワント ¥2,500）でご参加いただけます。</div>
+      </details>
+      <details class="faq-item">
+        <summary><span class="q-mark">Q</span><span>バレエシューズはどこで買えますか？</span><span class="toggle">+</span></summary>
+        <div class="faq-answer">ご入会後、教室提携店をご案内します。お子さまの場合はサイズアップが多いので、最初は無理に揃えず、ご相談ください。</div>
+      </details>
+      <details class="faq-item">
+        <summary><span class="q-mark">Q</span><span>月謝の支払い方法は？</span><span class="toggle">+</span></summary>
+        <div class="faq-answer">会費ペイ（自動引落）にて対応しております。手続きは入会時にご案内します。</div>
+      </details>
+      <details class="faq-item">
+        <summary><span class="q-mark">Q</span><span>発表会はありますか？</span><span class="toggle">+</span></summary>
+        <div class="faq-answer">年1〜2回開催を予定しています。参加は任意です。詳細は決定次第、教室・公式LINEにてご案内します。</div>
+      </details>
+      <details class="faq-item">
+        <summary><span class="q-mark">Q</span><span>休会はできますか？</span><span class="toggle">+</span></summary>
+        <div class="faq-answer">休会制度がございます。詳細はお問い合わせください。月2回までの振替（翌月適用のみ）も可能です。</div>
+      </details>
+    </ul>
+    <div style="text-align: center; margin-top: 32px;">
+      <a href="/faq/" class="view-all">FAQ 全件を見る</a>
+    </div>
+  </div>
+</section>
+
+<!-- ACCESS -->
+<section class="access-section" id="access">
+  <div class="access-inner">
+    <div class="access-info">
+      <span class="label">Access</span>
+      <h2>アクセス</h2>
+      <h3>Ballet Studio CONFY</h3>
+      <p>〒104-0051 東京都中央区佃3-2-10<br>オーケンビル4階</p>
+      <ul>
+        <li>東京メトロ有楽町線・都営大江戸線「月島駅」2番出口 徒歩3分</li>
+        <li><a href="mailto:balletstudio@confy.co.jp" style="color: var(--primary); border-bottom: 1px solid var(--primary);">balletstudio@confy.co.jp</a></li>
+      </ul>
+    </div>
+    <div class="access-map"></div>
+  </div>
+</section>
+
+<!-- TRIAL CTA -->
+<section class="trial-section" id="trial">
+  <h2>まずは体験レッスンへ。</h2>
+  <p>Ballet Studio CONFY のレッスンと教室の雰囲気を、ぜひ一度体験してみてください。<br>大人クラスは予約不要、お子さまのクラスは予約制でご案内しています。</p>
+  <div class="trial-actions">
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSflQ9xkNHRClXEMzYODo4-8qGiNSGznNOGJGQ3J1PAEjsGFpQ/viewform" target="_blank" rel="noopener" class="btn-primary">体験レッスンを予約する</a>
+    <a href="https://lin.ee/uGP7kES" target="_blank" rel="noopener" class="btn-line">LINEで相談する</a>
+  </div>
+</section>
+
+<!-- STICKY CTA -->
+<a href="#trial" class="sticky-cta" id="stickyCta">体験予約 →</a>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-links">
+    <a href="/events/">イベント</a>
+    <a href="/news/">お知らせ</a>
+    <a href="/teacher/">講師紹介</a>
+    <a href="/rules/">会員規約</a>
+    <a href="/privacy/">プライバシーポリシー</a>
+    <a href="/faq/">FAQ</a>
+  </div>
+  <div>© 2026 Ballet Studio CONFY ／ Operated by 株式会社CONFY</div>
+</footer>
+
+<script>
+// STICKY CTA
+const stickyCta = document.getElementById('stickyCta');
+const heroSection = document.querySelector('.hero');
+if (stickyCta && heroSection) {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        stickyCta.classList.remove('is-visible');
+      } else {
+        stickyCta.classList.add('is-visible');
+      }
+    });
+  }, { threshold: 0.1 });
+  observer.observe(heroSection);
+}
+
+// スケジュール曜日タップ展開
+const scheduleData = {
+  mon: { label: '月曜', en: 'Monday', items: [
+    ['19:15—20:45', '初級（大人）', '山本 怜']
+  ]},
+  tue: { label: '火曜', en: 'Tuesday', items: [
+    ['10:30—12:00', '基礎（大人）', '内藤 亜仁'],
+    ['12:15—13:45', '初級（大人）', '内藤 亜仁'],
+    ['17:30—19:00', 'Sクラス', '本田 千晃'],
+    ['19:15—20:45', '入門（大人）', '本田 千晃']
+  ]},
+  wed: { label: '水曜', en: 'Wednesday', items: [
+    ['10:30—11:45', 'スタート（大人）', '本田 千晃'],
+    ['12:00—13:30', '初級（大人）', '本田 千晃'],
+    ['13:40—14:10', 'ポワント', '本田 千晃 *'],
+    ['15:30—16:15', 'キッズ', '中田 彩晴'],
+    ['16:15—17:30', 'ジュニアB', '中田 彩晴'],
+    ['17:30—19:00', 'ジュニアA', '本田 千晃'],
+    ['19:00—20:30', 'Sクラス', '本田 千晃']
+  ]},
+  thu: { label: '木曜', en: 'Thursday', items: [
+    ['17:00—18:30', 'ジュニアA', '内藤 亜仁'],
+    ['18:30—20:00', 'プロ育成', '内藤 亜仁'],
+    ['20:00—21:15', 'スタート（大人）', '内藤 亜仁']
+  ]},
+  fri: { label: '金曜', en: 'Friday', items: [
+    ['10:30—12:00', '入門（大人）', '本田 千晃'],
+    ['12:15—13:45', '基礎（大人）', '本田 千晃'],
+    ['15:30—16:15', 'キッズ', '本田 千晃'],
+    ['16:15—17:30', 'ジュニアB', '本田 千晃'],
+    ['17:30—19:00', 'Sクラス', '本田 千晃'],
+    ['19:15—20:45', '初中級（大人）', '本田 千晃'],
+    ['20:50—21:20', 'ポワント', '本田 千晃 *']
+  ]},
+  sat: { label: '土曜', en: 'Saturday', items: [
+    ['9:00—9:45', 'キッズ', '本田 千晃'],
+    ['10:00—11:15', 'スタート（大人）', '本田 千晃'],
+    ['11:30—13:00', '入門（大人）', '本田 千晃'],
+    ['14:00—15:15', 'ジュニアB', '鈴木 千聖'],
+    ['15:15—16:45', 'ジュニアA', '山本 怜'],
+    ['17:00—18:30', 'Sクラス', '山本 怜'],
+    ['19:00—20:30', '中級（大人）', '山本 怜']
+  ]},
+  sun: { label: '日曜', en: 'Sunday', items: [
+    ['9:00—11:00', 'プロ育成', '本田 千晃'],
+    ['11:00—12:30', '初級（大人）', '本田 千晃'],
+    ['12:45—14:15', '初中級（大人）', '本田 千晃']
+  ]}
+};
+
+const days = document.querySelectorAll('.schedule-day');
+const detailEl = document.getElementById('scheduleDetail');
+const detailLabel = document.getElementById('detailDayLabel');
+const detailList = document.getElementById('detailList');
+let currentDay = null;
+
+days.forEach(d => {
+  d.addEventListener('click', () => {
+    const key = d.dataset.day;
+    if (currentDay === key) {
+      detailEl.classList.remove('is-open');
+      d.classList.remove('active');
+      currentDay = null;
+      return;
+    }
+    days.forEach(x => x.classList.remove('active'));
+    d.classList.add('active');
+    currentDay = key;
+    const data = scheduleData[key];
+    detailLabel.innerHTML = `${data.label} <span class="en">${data.en}</span>`;
+    detailList.innerHTML = data.items.map(it =>
+      `<li><span class="t-time">${it[0]}</span><span class="t-class">${it[1]}</span><span class="t-teacher">${it[2]}</span></li>`
+    ).join('');
+    detailEl.classList.add('is-open');
+    setTimeout(() => detailEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
+  });
+});
+</script>
+
+</body>
+</html>
