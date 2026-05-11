@@ -49,11 +49,12 @@ header { position: sticky; top: 36px; z-index: 100; background: var(--bg-white);
 .brand { font-family: 'Cormorant Garamond', serif; font-style: italic; }
 .brand-en { font-size: 11px; color: var(--gold); letter-spacing: 0.2em; display: block; line-height: 1; }
 .brand-name { font-size: 24px; color: var(--gold); letter-spacing: 0.04em; line-height: 1.2; margin-top: 2px; }
-.nav { display: flex; align-items: center; gap: 28px; font-size: 13px; color: var(--text-dark); }
+.nav { display: flex; align-items: center; gap: 28px; font-size: 13px; color: var(--text-dark); line-height: 1.4; letter-spacing: 0.08em; font-weight: 400; }
 .nav a:hover { color: var(--primary); }
 .nav .cta-trial { background: var(--primary); color: white; padding: 6px 16px; font-size: 12px; letter-spacing: 0.06em; line-height: 1.5; border-radius: 999px; }
 .nav .cta-trial:hover { background: var(--primary-dark); color: white; }
-.nav .cta-line { background: transparent; color: var(--primary); padding: 0; font-size: 13px; letter-spacing: 0.04em; border: none; }
+.nav .cta-line { background: #06C755; color: white; padding: 6px 14px 6px 28px; font-size: 12px; letter-spacing: 0.06em; line-height: 1.5; border-radius: 999px; position: relative; }
+.nav .cta-line::before { content: ""; position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 14px; height: 14px; background: white; border-radius: 50% 50% 50% 10%; transform: translateY(-50%) rotate(-10deg); }
 
 /* HERO */
 .hero { padding: 80px 48px 100px; background: linear-gradient(180deg, var(--bg-white) 0%, var(--bg-blue) 100%); position: relative; overflow: hidden; }
@@ -343,7 +344,6 @@ footer .footer-links a { color: rgba(255,255,255,0.6); margin: 0 14px; }
       <span class="brand-name">CONFY</span>
     </a>
     <nav class="nav">
-      <a href="#home">HOME</a>
       <a href="#about">CONFYについて</a>
       <a href="#class">クラス</a>
       <a href="#teacher">講師紹介</a>
