@@ -278,6 +278,22 @@ footer { background: var(--text-dark); color: rgba(255,255,255,0.5); padding: 56
 footer .footer-links { margin-bottom: 24px; }
 footer .footer-links a { color: rgba(255,255,255,0.6); margin: 0 14px; }
 
+/* BLOG */
+.blog-section { padding: 100px 48px; background: var(--bg-blue); }
+.blog-inner { max-width: 880px; margin: 0 auto; }
+.blog-header { text-align: center; margin-bottom: 48px; }
+.blog-header .label { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14px; color: var(--gold); letter-spacing: 0.18em; margin-bottom: 12px; display: block; }
+.blog-header h2 { font-family: 'Noto Serif JP', serif; font-size: 28px; font-weight: 500; color: var(--text-dark); margin-bottom: 16px; }
+.blog-header p { font-size: 14px; color: var(--text-muted); line-height: 1.9; max-width: 580px; margin: 0 auto; }
+.blog-card.coming-soon { background: var(--bg-white); border: 1px dashed var(--silver); padding: 64px 24px; text-align: center; }
+.blog-card.coming-soon .placeholder { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 20px; color: var(--text-light); letter-spacing: 0.08em; }
+.blog-card.coming-soon .placeholder small { display: block; font-family: 'Noto Sans JP', sans-serif; font-style: normal; font-size: 11px; color: var(--text-light); margin-top: 6px; letter-spacing: 0; }
+.blog-cta-wrap { text-align: center; margin-top: 36px; }
+@media (max-width: 768px) {
+.blog-section { padding: 56px 20px; }
+.blog-header h2 { font-size: 22px; }
+}
+
 /* MOBILE */
 @media (max-width: 1024px) {
   .news-pickup { grid-template-columns: 1fr; gap: 16px; }
@@ -718,6 +734,23 @@ footer .footer-links a { color: rgba(255,255,255,0.6); margin: 0 14px; }
   </div>
 </section>
 
+<!-- BLOG -->
+<section class="blog-section" id="blog">
+<div class="blog-inner">
+<div class="blog-header">
+<span class="label">Blog</span>
+<h2>講師の言葉</h2>
+<p>レッスンのこと、バレエのこと、それぞれの講師が綴る言葉。<br>稽古場の空気を、文字を通してお届けします。</p>
+</div>
+<div class="blog-card coming-soon">
+<div class="placeholder">第1号 準備中<small>本田 千晃 / Coming Soon</small></div>
+</div>
+<div class="blog-cta-wrap">
+<a href="/blog/" class="view-all">View All Articles</a>
+</div>
+</div>
+</section>
+
 <!-- ACCESS -->
 <section class="access-section" id="access">
   <div class="access-inner">
@@ -752,6 +785,7 @@ footer .footer-links a { color: rgba(255,255,255,0.6); margin: 0 14px; }
 <footer>
   <div class="footer-links">
     <a href="/events/">イベント</a>
+<a href="/blog/">ブログ</a>
     <a href="/news/">お知らせ</a>
     <a href="/teacher/">講師紹介</a>
     <a href="/rules/">会員規約</a>
