@@ -166,6 +166,8 @@ header { position: sticky; top: 36px; z-index: 100; background: var(--bg-white);
 .teacher-section .section-title { color: white; }
 .teacher-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr auto; gap: 28px; align-items: center; }
 .teacher-card { text-align: center; }
+.teacher-card-link { display: block; transition: opacity 0.25s; cursor: pointer; }
+.teacher-card-link:hover { opacity: 0.75; }
 .teacher-photo { aspect-ratio: 1 / 1.2; background-size: cover; background-position: center top; background-color: rgba(255,255,255,0.06); margin-bottom: 18px; }
 .teacher-photo.t-honda { background-image: url('/assets/teacher_honda_3x4.jpg'); }
 .teacher-photo.t-yamamoto { background-image: url('/assets/teacher_yamamoto_3x4.jpg'); }
@@ -176,21 +178,6 @@ header { position: sticky; top: 36px; z-index: 100; background: var(--bg-white);
 .teacher-card .reading { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 11px; color: rgba(255,255,255,0.5); letter-spacing: 0.1em; display: block; margin-bottom: 8px; }
 .teacher-card .role { font-size: 10px; color: rgba(255,255,255,0.55); line-height: 1.6; }
 .teacher-viewall { background: white; color: var(--text-dark); padding: 16px 22px; font-size: 11px; letter-spacing: 0.15em; border-radius: 999px; text-transform: uppercase; font-weight: 500; white-space: nowrap; }
-
-/* STUDIO */
-.studio-section { padding: 100px 48px; background: var(--bg-white); }
-.studio-inner { max-width: 1280px; margin: 0 auto; }
-.studio-header { text-align: center; margin-bottom: 56px; }
-.studio-header .label { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14px; color: var(--gold); letter-spacing: 0.18em; margin-bottom: 12px; display: block; }
-.studio-header h2 { font-family: 'Noto Serif JP', serif; font-size: 28px; font-weight: 500; color: var(--text-dark); margin-bottom: 16px; }
-.studio-header p { font-size: 14px; color: var(--text-muted); line-height: 1.9; max-width: 580px; margin: 0 auto; }
-.studio-features { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-top: 1px solid var(--silver-light); border-bottom: 1px solid var(--silver-light); }
-.studio-feature { padding: 40px 24px; border-right: 1px solid var(--silver-light); text-align: center; }
-.studio-feature:last-child { border-right: none; }
-.studio-feature .number { font-family: 'Noto Serif JP', serif; font-size: 36px; font-weight: 500; color: var(--text-dark); line-height: 1; margin-bottom: 4px; }
-.studio-feature .unit { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 14px; color: var(--gold); letter-spacing: 0.08em; display: block; margin-bottom: 16px; }
-.studio-feature .label-title { font-family: 'Noto Serif JP', serif; font-size: 14px; color: var(--text-dark); font-weight: 500; margin-bottom: 6px; letter-spacing: 0.04em; }
-.studio-feature .desc { font-size: 11px; color: var(--text-muted); line-height: 1.7; }
 
 /* PRICE */
 .price-section { padding: 100px 48px; background: var(--bg-blue); }
@@ -299,10 +286,6 @@ footer .footer-links a { color: rgba(255,255,255,0.6); margin: 0 14px; }
   .class-grid, .flow-grid, .price-grid { grid-template-columns: 1fr 1fr; }
   .teacher-grid { grid-template-columns: 1fr 1fr 1fr; }
   .teacher-viewall { grid-column: span 3; justify-self: center; margin-top: 16px; }
-  .studio-features { grid-template-columns: 1fr 1fr; border: none; }
-  .studio-feature { border-right: none; border-bottom: 1px solid var(--silver-light); }
-  .studio-feature:nth-child(odd) { border-right: 1px solid var(--silver-light); }
-  .studio-feature:nth-last-child(-n+2) { border-bottom: none; }
   .voice-grid { grid-template-columns: 1fr 1fr; }
   .voice-card.coming-soon { display: none; }
   .access-inner { grid-template-columns: 1fr; }
@@ -321,7 +304,7 @@ footer .footer-links a { color: rgba(255,255,255,0.6); margin: 0 14px; }
   .hero { padding: 60px 20px 80px; }
   .hero h1 { font-size: 32px; }
   .hero-actions { flex-direction: column; align-items: stretch; }
-  .news-section, .concept, .class-section, .schedule-section, .teacher-section, .studio-section, .price-section, .voice-section, .flow-section, .faq-section, .access-section, .trial-section { padding: 56px 20px; }
+  .news-section, .concept, .class-section, .schedule-section, .teacher-section, .price-section, .voice-section, .flow-section, .faq-section, .access-section, .trial-section { padding: 56px 20px; }
   .news-pickup { padding: 24px; }
   .concept-grid { grid-template-columns: 1fr; border: none; }
   .concept-item { border-right: none; border-bottom: 1px solid var(--silver-light); padding: 32px 0; }
@@ -329,12 +312,9 @@ footer .footer-links a { color: rgba(255,255,255,0.6); margin: 0 14px; }
   .class-grid, .voice-grid, .flow-grid, .price-grid { grid-template-columns: 1fr; gap: 14px; }
   .teacher-grid { grid-template-columns: 1fr 1fr; }
   .teacher-viewall { grid-column: span 2; }
-  .studio-features { grid-template-columns: 1fr; border: none; }
-  .studio-feature, .studio-feature:nth-child(odd) { border-right: none; border-bottom: 1px solid var(--silver-light); }
-  .studio-feature:last-child { border-bottom: none; }
   .voice-card.coming-soon { display: none; }
   .trial-actions { flex-direction: column; align-items: stretch; }
-  .section-title, .access-info h2, .voice-header h2, .studio-header h2, .schedule-header h2, .price-header h2, .flow-header h2, .faq-header h2, .trial-section h2 { font-size: 22px; }
+  .section-title, .access-info h2, .voice-header h2, .schedule-header h2, .price-header h2, .flow-header h2, .faq-header h2, .trial-section h2 { font-size: 22px; }
   .schedule-banner { flex-direction: column; align-items: flex-start; gap: 8px; }
   .schedule-banner .banner-text { margin-left: 0; }
 }
@@ -367,7 +347,6 @@ footer .footer-links a { color: rgba(255,255,255,0.6); margin: 0 14px; }
       <a href="#about">CONFYについて</a>
       <a href="#class">クラス</a>
       <a href="#teacher">講師紹介</a>
-      <a href="#studio">スタジオ</a>
       <a href="#news">お知らせ</a>
       <a href="#access">アクセス</a>
       <a href="#trial" class="cta-trial">体験レッスンを予約する</a>
@@ -554,74 +533,37 @@ footer .footer-links a { color: rgba(255,255,255,0.6); margin: 0 14px; }
       <h2 class="section-title">講師紹介</h2>
     </div>
     <div class="teacher-grid">
-      <div class="teacher-card">
+      <a href="/teacher/" class="teacher-card-link"><div class="teacher-card">
         <div class="teacher-photo t-honda"></div>
         <h4>本田 千晃</h4>
         <span class="reading">ほんだ ちあき</span>
         <p class="role">BSC代表 / 元東京シティ・バレエ団</p>
-      </div>
-      <div class="teacher-card">
+      </div></a>
+      <a href="/teacher/" class="teacher-card-link"><div class="teacher-card">
         <div class="teacher-photo t-yamamoto"></div>
         <h4>山本 怜</h4>
         <span class="reading">やまもと れい</span>
         <p class="role">元小林紀子バレエ・シアター</p>
-      </div>
-      <div class="teacher-card">
+      </div></a>
+      <a href="/teacher/" class="teacher-card-link"><div class="teacher-card">
         <div class="teacher-photo t-naito"></div>
         <h4>内藤 亜仁</h4>
         <span class="reading">ないとう あみ</span>
         <p class="role">元東京シティ・バレエ団 ソリスト</p>
-      </div>
-      <div class="teacher-card">
+      </div></a>
+      <a href="/teacher/" class="teacher-card-link"><div class="teacher-card">
         <div class="teacher-photo t-nakata"></div>
         <h4>中田 彩晴</h4>
         <span class="reading">なかた いろは</span>
         <p class="role">元東京バレエ団</p>
-      </div>
-      <div class="teacher-card">
+      </div></a>
+      <a href="/teacher/" class="teacher-card-link"><div class="teacher-card">
         <div class="teacher-photo t-suzuki"></div>
         <h4>鈴木 千聖</h4>
         <span class="reading">すずき ちさと</span>
         <p class="role">元 NBA BALLET COMPANY</p>
-      </div>
+      </div></a>
       <a href="/teacher/" class="teacher-viewall">講師一覧を見る</a>
-    </div>
-  </div>
-</section>
-
-<!-- STUDIO -->
-<section class="studio-section" id="studio">
-  <div class="studio-inner">
-    <div class="studio-header">
-      <span class="label">Studio</span>
-      <h2>スタジオ環境</h2>
-      <p>月島駅徒歩3分。集中できる、本格的な環境を用意しています。</p>
-    </div>
-    <div class="studio-features">
-      <div class="studio-feature">
-        <div class="number">110</div>
-        <span class="unit">㎡</span>
-        <div class="label-title">広々スタジオ</div>
-        <p class="desc">ゆったり踊れる広さ</p>
-      </div>
-      <div class="studio-feature">
-        <div class="number">25</div>
-        <span class="unit">名定員</span>
-        <div class="label-title">少人数制</div>
-        <p class="desc">一人ひとりに目が届く</p>
-      </div>
-      <div class="studio-feature">
-        <div class="number">3</div>
-        <span class="unit">min</span>
-        <div class="label-title">月島駅徒歩</div>
-        <p class="desc">2番出口から3分</p>
-      </div>
-      <div class="studio-feature">
-        <div class="number">11</div>
-        <span class="unit">classes</span>
-        <div class="label-title">クラス数</div>
-        <p class="desc">大人6 + 子ども5</p>
-      </div>
     </div>
   </div>
 </section>
