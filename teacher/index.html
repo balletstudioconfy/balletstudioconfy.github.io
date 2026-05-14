@@ -2290,6 +2290,31 @@
   [style*="teacher_suzuki_3x4"] { background-position: 65% top !important; }
 
 </style>
+<style id="teacher-list-grid-override">
+  /* /teacher/ 一覧ページ専用: 5列 / 3列 / 1列 のレスポンシブ override
+     共通CSSは触らず、このページ内のみ override */
+  @media (min-width: 1100px) {
+    #teacher-list .teacher-grid {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      max-width: 1200px;
+      gap: 28px;
+    }
+  }
+  @media (max-width: 1099px) and (min-width: 768px) {
+    #teacher-list .teacher-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      max-width: 720px;
+      gap: 28px;
+    }
+  }
+  @media (max-width: 767px) {
+    #teacher-list .teacher-grid {
+      grid-template-columns: 1fr;
+      max-width: 320px;
+      gap: 24px;
+    }
+  }
+</style>
 <!-- Google tag (gtag.js) -->
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-PBHFPE4RL8"></script>
 <script>
@@ -2331,7 +2356,7 @@
       </p>
     </div>
   </div>
-</section><section class="other-teachers-section" style="padding-top: 20px;">
+</section><section class="other-teachers-section" id="teacher-list" style="padding-top: 20px;">
   <div class="container">
     <div class="teacher-grid">
       <a href="/teacher/honda/" class="teacher-card">
