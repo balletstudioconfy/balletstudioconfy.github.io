@@ -344,6 +344,37 @@ footer .footer-links a { color: rgba(255,255,255,0.6); margin: 0 14px; }
   .voice-card { padding: 28px 24px 24px; }
   .voice-text { font-size: 14px; line-height: 1.9; }
 }
+
+/* BLOG ACTIVE CARD */
+.blog-card-link { display: block; text-decoration: none; color: inherit; max-width: 720px; margin: 0 auto; }
+.blog-card-real { background: var(--bg-white); padding: 36px 32px; display: grid; grid-template-columns: 160px 1fr auto; gap: 32px; align-items: start; border: 1px solid var(--silver-light); transition: all 0.25s; }
+.blog-card-link:hover .blog-card-real { border-color: var(--gold); transform: translateY(-2px); }
+.blog-card-meta { display: flex; flex-direction: column; gap: 8px; }
+.blog-card-meta .number { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 13px; color: var(--gold); letter-spacing: 0.18em; text-transform: uppercase; }
+.blog-card-meta .date { font-family: 'Inter', sans-serif; font-size: 12px; color: var(--text-light); letter-spacing: 0.08em; }
+.blog-card-meta .author { font-family: 'Noto Serif JP', serif; font-size: 13px; color: var(--text-mid); margin-top: 4px; }
+.blog-card-body h3 { font-family: 'Noto Serif JP', serif; font-size: 20px; font-weight: 500; color: var(--text-dark); margin-bottom: 10px; line-height: 1.5; letter-spacing: 0.04em; }
+.blog-card-body p { font-size: 13px; color: var(--text-muted); line-height: 1.9; }
+.blog-card-arrow { font-family: 'Cormorant Garamond', serif; font-size: 24px; color: var(--text-light); align-self: center; transition: transform 0.3s; }
+.blog-card-link:hover .blog-card-arrow { transform: translateX(4px); color: var(--primary); }
+@media (max-width: 768px) {
+  .blog-card-real { grid-template-columns: 1fr; gap: 12px; padding: 24px 20px; }
+  .blog-card-arrow { display: none; }
+  .blog-card-body h3 { font-size: 17px; }
+}
+
+/* PRIVATE TEACHER SUB-SECTION */
+.teacher-private-section { margin-top: 64px; padding-top: 56px; border-top: 1px solid rgba(255,255,255,0.1); }
+.teacher-private-label { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 13px; color: var(--gold); letter-spacing: 0.18em; margin-bottom: 12px; display: block; text-align: center; text-transform: uppercase; }
+.teacher-private-title { font-family: 'Noto Serif JP', serif; font-size: 22px; font-weight: 500; color: white; letter-spacing: 0.05em; margin-bottom: 8px; text-align: center; }
+.teacher-private-note { font-size: 13px; color: rgba(255,255,255,0.6); text-align: center; margin-bottom: 40px; max-width: 520px; margin: 0 auto 40px; line-height: 1.9; }
+.teacher-private-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; max-width: 520px; margin: 0 auto; }
+.teacher-photo.t-wakuta { background-image: url('/assets/teacher_wakuta_3x4.jpg'); }
+.teacher-photo.t-kaneko { background-image: url('/assets/teacher_kaneko_3x4.jpg'); }
+@media (max-width: 768px) {
+  .teacher-private-grid { grid-template-columns: 1fr; max-width: 280px; }
+}
+
 </style>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-PBHFPE4RL8"></script>
@@ -587,6 +618,27 @@ footer .footer-links a { color: rgba(255,255,255,0.6); margin: 0 14px; }
       </div></a>
       <a href="/teacher/" class="teacher-viewall">講師一覧を見る</a>
     </div>
+
+    <!-- PRIVATE TEACHER SUB-SECTION -->
+    <div class="teacher-private-section">
+      <span class="teacher-private-label">Private Specialists</span>
+      <h3 class="teacher-private-title">プライベートレッスン専任講師</h3>
+      <p class="teacher-private-note">レギュラークラスは持たず、プライベートレッスン専任でご対応します。<br>マンツーマンで、目的・レベルに合わせたオーダーメイドの稽古を。</p>
+      <div class="teacher-private-grid">
+        <a href="/teacher/" class="teacher-card-link"><div class="teacher-card">
+          <div class="teacher-photo t-wakuta"></div>
+          <h4>涌田 美紀</h4>
+          <span class="reading">わくた みき</span>
+          <p class="role">プロフィールを見る →</p>
+        </div></a>
+        <a href="/teacher/" class="teacher-card-link"><div class="teacher-card">
+          <div class="teacher-photo t-kaneko"></div>
+          <h4>金子 仁美</h4>
+          <span class="reading">かねこ ひとみ</span>
+          <p class="role">プロフィールを見る →</p>
+        </div></a>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -742,9 +794,20 @@ footer .footer-links a { color: rgba(255,255,255,0.6); margin: 0 14px; }
 <h2>講師の言葉</h2>
 <p>レッスンのこと、バレエのこと、それぞれの講師が綴る言葉。<br>稽古場の空気を、文字を通してお届けします。</p>
 </div>
-<div class="blog-card coming-soon">
-<div class="placeholder">第1号 準備中<small>本田 千晃 / Coming Soon</small></div>
+<a href="/blog/01-confy-meaning/" class="blog-card-link">
+<div class="blog-card-real">
+<div class="blog-card-meta">
+<span class="number">No. 01</span>
+<span class="date">2026.05.14</span>
+<span class="author">本田 千晃</span>
 </div>
+<div class="blog-card-body">
+<h3>CONFY という名前に込めた想い</h3>
+<p>Comfortable と Confidence ――― ふたつの英単語を重ねた、この場所への願い。代表・本田千晃が綴る、CONFY が大切にしていること。</p>
+</div>
+<span class="blog-card-arrow">→</span>
+</div>
+</a>
 <div class="blog-cta-wrap">
 <a href="/blog/" class="view-all">View All Articles</a>
 </div>
