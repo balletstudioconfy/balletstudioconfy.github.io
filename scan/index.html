@@ -1438,7 +1438,15 @@
         ? "<span style='color:var(--gold-deep);font-size:13px;margin-left:8px;'>（振替+" + att.carryOver + "回）</span>"
         : "";
 
-      if (att.judgment === "月謝内") {
+      if (att.judgment === "🔁前月振替") {
+        // 前月からの繰越（振替）でチェックイン → 月謝内・¥0
+        j.className = "badge ok";
+        const carryLeft = Math.max(0, (att.carryOver || 0) - (att.monthCount || 0));
+        const carryLeftNote = carryLeft > 0
+          ? "<span style='color:var(--gold-deep);font-size:13px;margin-left:8px;'>（振替あと" + carryLeft + "回）</span>"
+          : "";
+        j.innerHTML = "🔁 今日は前月の振替です" + dot + "<span class='price'>¥0</span>" + carryLeftNote;
+      } else if (att.judgment === "月謝内") {
         j.className = "badge ok";
         j.innerHTML = "月謝内" + dot + "残り " + (att.remaining ?? "—") + " 回" + carryNote;
       } else if (att.judgment === "⚠️ポワント") {
