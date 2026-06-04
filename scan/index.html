@@ -1435,7 +1435,7 @@
 
       // 振替情報
       const carryNote = (att.carryOver && att.carryOver > 0)
-        ? "<span style='color:var(--gold-deep);font-size:13px;margin-left:8px;'>（振替+" + att.carryOver + "回）</span>"
+        ? "<span style='color:var(--gold-deep);font-size:13px;margin-left:8px;'>（前月の振替+" + att.carryOver + "回・今月末まで）</span>"
         : "";
 
       if (att.judgment === "🔁前月振替") {
@@ -1443,7 +1443,7 @@
         j.className = "badge ok";
         const carryLeft = Math.max(0, (att.carryOver || 0) - (att.monthCount || 0));
         const carryLeftNote = carryLeft > 0
-          ? "<span style='color:var(--gold-deep);font-size:13px;margin-left:8px;'>（振替あと" + carryLeft + "回）</span>"
+          ? "<span style='color:var(--gold-deep);font-size:13px;margin-left:8px;'>（振替あと" + carryLeft + "回・今月末まで）</span>"
           : "";
         j.innerHTML = "🔁 今日は前月の振替です" + dot + "<span class='price'>¥0</span>" + carryLeftNote;
       } else if (att.judgment === "月謝内") {
