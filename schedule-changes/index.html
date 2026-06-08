@@ -159,6 +159,7 @@
   .cat-label.tokubetsu { background: var(--tokubetsu); color: white; }
   .cat-label.daiko { background: var(--daiko); color: white; }
   .cat-label.kyukou { background: var(--kyukou); color: white; }
+  .cat-label.hensei { background: var(--text-dark); color: white; }
 
   .change-list { list-style: none; }
   .change-item {
@@ -258,7 +259,7 @@
   <div class="container">
     <span class="page-label">Schedule Changes</span>
     <h1 class="page-title">スケジュール変更のお知らせ</h1>
-    <p class="page-meta">最終更新：2026.06.06</p>
+    <p class="page-meta">最終更新：2026.06.08</p>
     <p class="page-lead">
       代行・休講・特別ワークショップなど、通常スケジュールからの変更情報をご案内します。<br>
       最新の連絡は<a href="https://lin.ee/uGP7kES" target="_blank" rel="noopener">公式LINE</a>からも順次お送りしております。
@@ -275,22 +276,50 @@
     <div class="month-section" id="july">
       <h2 class="month-title"><span class="month-num">07</span>2026年7月</h2>
 
+      <!-- クラス編成変更（7月からの通常スケジュール変更） -->
+      <div class="cat-section">
+        <span class="cat-label hensei">クラス編成変更</span>
+        <ul class="change-list">
+          <li class="change-item">
+            <div class="change-date">火曜 10:30-12:00</div>
+            <div class="change-detail">
+              <span class="class-name">基礎／入門</span>（旧・基礎10:30 ＋ 初級12:15 を1クラスに統合）担当：本田 千晃
+              <span class="note">基礎の方はこれまでどおり、初級の方は「入門」として同じクラスにご参加いただけます。</span>
+            </div>
+          </li>
+          <li class="change-item">
+            <div class="change-date">土曜 17:00-18:30</div>
+            <div class="change-detail">
+              <span class="class-name">中級</span>（旧・Sクラス17:00 ＋ 中級19:00 を1クラスに統合）担当：本田 千晃
+            </div>
+          </li>
+          <li class="change-item">
+            <div class="change-date">土曜 15:15-16:45</div>
+            <div class="change-detail">
+              <span class="class-name">ジュニアA</span> 担当が 山本 怜 → 本田 千晃 に（状況により 鈴木 千聖）
+            </div>
+          </li>
+          <li class="change-item">
+            <div class="change-date">スタート（大人）</div>
+            <div class="change-detail">
+              <span class="class-name">スタート（大人）</span> 土曜10:00 の1クラスに集約
+              <span class="note">水曜・木曜の「スタート」クラスは終了します。</span>
+            </div>
+          </li>
+          <li class="change-item">
+            <div class="change-date">水曜 10:30</div>
+            <div class="change-detail">
+              <span class="class-name">朝スタート</span> 通常クラスとしては終了
+              <span class="note">月1回の「無料体験会」枠として新しく開催予定です（別途ご案内）。</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+
       <!-- 代行 -->
       <div class="cat-section">
         <span class="cat-label daiko">変更</span>
         <ul class="change-list">
-          <li class="change-item">
-            <div class="change-date">7/4（土）15:15-16:45</div>
-            <div class="change-detail"><span class="class-name">ジュニアA</span> 山本 怜 → 本田 千晃</div>
-          </li>
-          <li class="change-item">
-            <div class="change-date">7/4（土）17:00-18:30</div>
-            <div class="change-detail"><span class="class-name">Sクラス</span> 山本 怜 → 本田 千晃</div>
-          </li>
-          <li class="change-item">
-            <div class="change-date">7/4（土）19:00-20:30</div>
-            <div class="change-detail"><span class="class-name">中級</span> 山本 怜 → 本田 千晃</div>
-          </li>
           <li class="change-item">
             <div class="change-date">7/8（水）15:30-16:15</div>
             <div class="change-detail"><span class="class-name">キッズ</span> 中田 彩晴 → 本田 千晃</div>
@@ -298,18 +327,6 @@
           <li class="change-item">
             <div class="change-date">7/8（水）16:15-17:30</div>
             <div class="change-detail"><span class="class-name">ジュニアB</span> 中田 彩晴 → 本田 千晃</div>
-          </li>
-          <li class="change-item">
-            <div class="change-date">7/25（土）15:15-16:45</div>
-            <div class="change-detail"><span class="class-name">ジュニアA</span> 山本 怜 → 本田 千晃</div>
-          </li>
-          <li class="change-item">
-            <div class="change-date">7/25（土）17:00-18:30</div>
-            <div class="change-detail"><span class="class-name">Sクラス</span> 山本 怜 → 本田 千晃</div>
-          </li>
-          <li class="change-item">
-            <div class="change-date">7/25（土）19:00-20:30</div>
-            <div class="change-detail"><span class="class-name">中級</span> 山本 怜 → 本田 千晃</div>
           </li>
         </ul>
       </div>
@@ -362,7 +379,7 @@
           <li class="change-item">
             <div class="change-date">6/6（土）15:15-16:45</div>
             <div class="change-detail">
-              <span class="class-name">ジュニアAB合同</span> 山本 怜 → 本田 千晃
+              <span class="class-name">ジュニアAB合同</span> 山本 怜 → 鈴木 千聖
               <span class="note">バリエーション開催のためAB合同で実施</span>
             </div>
           </li>
@@ -394,6 +411,30 @@
             <div class="change-date">6/24（水）16:15-17:30</div>
             <div class="change-detail"><span class="class-name">ジュニアB</span> 中田 彩晴 → 本田 千晃</div>
           </li>
+          <li class="change-item">
+            <div class="change-date">6/9・16・23・30（火）</div>
+            <div class="change-detail"><span class="class-name">基礎（10:30）／初級（12:15）</span> 内藤 亜仁 → 本田 千晃</div>
+          </li>
+          <li class="change-item">
+            <div class="change-date">6/4・11・18・25（木）17:00-18:30</div>
+            <div class="change-detail"><span class="class-name">ジュニアA</span> 内藤 亜仁 → 本田 千晃</div>
+          </li>
+          <li class="change-item">
+            <div class="change-date">6/20（土）15:15-16:45</div>
+            <div class="change-detail"><span class="class-name">ジュニアA</span> 山本 怜 → 鈴木 千聖</div>
+          </li>
+          <li class="change-item">
+            <div class="change-date">6/27（土）15:15-16:45</div>
+            <div class="change-detail"><span class="class-name">ジュニアA</span> 山本 怜 → 本田 千晃</div>
+          </li>
+          <li class="change-item">
+            <div class="change-date">6/20・27（土）17:00-18:30</div>
+            <div class="change-detail"><span class="class-name">Sクラス</span> 山本 怜 → 本田 千晃</div>
+          </li>
+          <li class="change-item">
+            <div class="change-date">6/20・27（土）19:00-20:30</div>
+            <div class="change-detail"><span class="class-name">中級</span> 山本 怜 → 本田 千晃</div>
+          </li>
         </ul>
       </div>
 
@@ -404,6 +445,10 @@
           <li class="change-item">
             <div class="change-date">6/1（月）19:15-20:45</div>
             <div class="change-detail"><span class="class-name">初級（大人）</span></div>
+          </li>
+          <li class="change-item">
+            <div class="change-date">6/4・11・18・25（木）20:00-21:15</div>
+            <div class="change-detail"><span class="class-name">スタート（大人）</span></div>
           </li>
           <li class="change-item">
             <div class="change-date">6/6（土）14:00-15:15</div>
