@@ -956,6 +956,17 @@
     }
 
     const API_URL = "https://script.google.com/macros/s/AKfycbykW9_psLnNpP_5qHBMmQwcGsb86EAgTQU8vjrw1i0a9dTfL5NAixvnI2uaKq6xWQ9sWA/exec";
+    // 体験チェックイン時、line-gatewayにも通知して公式LINE体験者と突合→[入会/見送り]カードを自動投稿（Phase2）。
+    // GAS送信とは独立のfire-and-forget（失敗してもscanの受付表示には影響させない）。
+    const LINE_GATEWAY_URL = "https://confy-line-gateway.n-iwatsuki.workers.dev";
+    function notifyTrialCheckin(name, furigana) {
+      try {
+        fetch(LINE_GATEWAY_URL + "/scan/trial-checkin", {
+          method: "POST",
+          body: JSON.stringify({ name: name, furigana: furigana || "" })
+        }).catch(function () {});
+      } catch (e) {}
+    }
     const RESULT_DISPLAY_SECONDS = 10;
 
     /* ====== v12: 設定 ====== */
@@ -1318,6 +1329,8 @@
       const submitBtn = document.getElementById("formSubmit");
       submitBtn.disabled = true;
       submitBtn.textContent = "SENDING...";
+      // 体験のみ：line-gatewayへ通知（突合→入会/見送りカード）。GAS送信とは独立に先行発火。
+      if (currentFormType === "trial") notifyTrialCheckin(name, furigana);
       await sendCheckin({ walkin: { type: currentFormType, name, furigana } });
     }
 
