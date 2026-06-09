@@ -959,10 +959,15 @@
     // 体験チェックイン時、line-gatewayにも通知して公式LINE体験者と突合→[入会/見送り]カードを自動投稿（Phase2）。
     // GAS送信とは独立のfire-and-forget（失敗してもscanの受付表示には影響させない）。
     const LINE_GATEWAY_URL = "https://confy-line-gateway.n-iwatsuki.workers.dev";
+    // line-gateway /scan/trial-checkin の共有トークン（line-gateway側 SCAN_TOKEN と同値）。
+    // 公開HTMLに載るため厳密な秘匿ではない＝URLを叩くだけの無差別投稿を弾く位置づけ。値を変える時は
+    // 両方（このconst と `wrangler secret put SCAN_TOKEN`）を同時に更新する。
+    const SCAN_TOKEN = "scan_D_UPV-JNPO28waLVZtos76ExvKkygvMm";
     function notifyTrialCheckin(name, furigana) {
       try {
         fetch(LINE_GATEWAY_URL + "/scan/trial-checkin", {
           method: "POST",
+          headers: { "content-type": "application/json", "x-scan-token": SCAN_TOKEN },
           body: JSON.stringify({ name: name, furigana: furigana || "" })
         }).catch(function () {});
       } catch (e) {}
