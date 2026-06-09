@@ -2627,7 +2627,7 @@
         <div><span class="ttl">月12回</span><span class="val">¥25,000</span></div>
         <div><span class="ttl">フリー</span><span class="val">¥37,000</span></div>
       </div>
-      <p class="price-note">ポワント：¥2,000／追加クラス1回：¥3,000／ビジター1回：¥3,800（ポワント ¥2,500）／入会金：¥15,000</p>
+      <p class="price-note">ポワント：<span data-fee="POINTE_MEMBER">¥2,000</span>／追加クラス1回：<span data-fee="ADDITIONAL_FEE">¥3,000</span>／ビジター1回：<span data-fee="VISITOR">¥3,800</span>（ポワント <span data-fee="POINTE_VISITOR">¥2,500</span>）／入会金：<span data-fee="ENROLLMENT">¥15,000</span></p>
     </div>
 
     <div class="class-grid reveal-stagger" data-reveal-stagger="true">
@@ -3189,7 +3189,7 @@
     <div class="price-block">
       <h3>入会金</h3>
       <table class="price-table">
-        <tr><td>はじめての方</td><td>¥15,000</td></tr>
+        <tr><td>はじめての方</td><td data-fee="ENROLLMENT">¥15,000</td></tr>
       </table>
     </div>
 
@@ -3219,7 +3219,7 @@
         <tr><td>週4回</td><td>¥34,000</td></tr>
         <tr><td>フリー（プロ育成・オープンクラス含む）</td><td>¥45,000</td></tr>
       </table>
-      <p class="price-note">ジュニアクラス追加1回：¥3,000／キッズ・ジュニアの体験レッスンは1回まで無料</p>
+      <p class="price-note">ジュニアクラス追加1回：<span data-fee="ADDITIONAL_FEE">¥3,000</span>／キッズ・ジュニアの体験レッスンは1回まで無料</p>
     </div>
 
     <div class="price-block">
@@ -3230,14 +3230,14 @@
         <tr><td>月12回</td><td>¥25,000</td></tr>
         <tr><td>フリー</td><td>¥37,000</td></tr>
       </table>
-      <p class="price-note">ポワント：¥2,000／追加クラス1回：¥3,000</p>
+      <p class="price-note">ポワント：<span data-fee="POINTE_MEMBER">¥2,000</span>／追加クラス1回：<span data-fee="ADDITIONAL_FEE">¥3,000</span></p>
     </div>
 
     <div class="price-block">
       <h3>ビジター（体験・単発参加）</h3>
       <table class="price-table">
-        <tr><td>ビジター1回</td><td>¥3,800</td></tr>
-        <tr><td>ビジターポワント</td><td>¥2,500</td></tr>
+        <tr><td>ビジター1回</td><td data-fee="VISITOR">¥3,800</td></tr>
+        <tr><td>ビジターポワント</td><td data-fee="POINTE_VISITOR">¥2,500</td></tr>
       </table>
     </div>
 
@@ -3931,6 +3931,33 @@ window.__teachers = {
         const age=now-t;
         if(age<=week && age>=-day){ li.classList.add('is-new'); }
       });
+    })();
+  </script>
+  <!-- ============== 料金の自動表示（Studio Ops settings → public_fees ビュー） ==============
+       本田がStudio Opsの「設定」で単発料金を変更すると、ここが自動で追従する。
+       取得失敗・キー欠落時はHTMLに書かれた既定値をそのまま表示（フォールバック）。
+       ※月謝（キッズ/ジュニア/大人の定価表）はStudio Opsに正本データが無いため対象外（手書き据え置き）。 -->
+  <script>
+    (async function(){
+      const SB = 'https://ikndtckdvquoxltjgump.supabase.co';
+      const ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlrbmR0Y2tkdnF1b3hsdGpndW1wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA3OTE1ODQsImV4cCI6MjA5NjM2NzU4NH0.AcPMU7S4NFaHRfyxii9cNhXF356Lsn6wb-0aOZHafnM';
+      try {
+        const res = await fetch(SB + '/rest/v1/public_fees?select=*', {
+          headers: { apikey: ANON, Authorization: 'Bearer ' + ANON }
+        });
+        if (!res.ok) return; // 失敗時は既定値を維持
+        const rows = await res.json();
+        if (!Array.isArray(rows)) return;
+        const map = {};
+        rows.forEach(function(r){ map[r.key] = r.value; });
+        document.querySelectorAll('[data-fee]').forEach(function(el){
+          const k = el.getAttribute('data-fee');
+          if (!(k in map)) return;
+          const n = parseInt(map[k], 10);
+          if (isNaN(n)) return;
+          el.textContent = (n === 0) ? '無料' : '¥' + n.toLocaleString('ja-JP');
+        });
+      } catch (e) { /* 失敗時は既定値を維持 */ }
     })();
   </script>
 </body>

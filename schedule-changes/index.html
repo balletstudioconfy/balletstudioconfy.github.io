@@ -270,6 +270,14 @@
 <section class="content">
   <div class="container">
 
+    <!-- 自動表示（Studio Ops public_schedule_changes ビュー）。
+         行があればここに描画し、下の手書き(#changes-static)を隠す。
+         0件・取得失敗時は手書きをそのまま残す（フォールバック）。 -->
+    <div id="changes-dynamic" hidden></div>
+
+    <!-- 手書きフォールバック（Studio Opsに予定が入るまでの暫定表示） -->
+    <div id="changes-static">
+
     <!-- ========================================
          7月
     ========================================= -->
@@ -500,6 +508,7 @@
         </ul>
       </div>
     </div>
+    </div><!-- /#changes-static -->
 
     <div class="info-block">
       <p><strong>振替・お問い合わせについて</strong></p>
@@ -523,6 +532,69 @@
     <span>© 2026 Ballet Studio CONFY ／ Operated by 株式会社CONFY</span>
   </div>
 </footer>
+
+<!-- ============== スケジュール変更の自動表示（Studio Ops public_schedule_changes ビュー） ==============
+     本田がStudio Opsの「予定変更」に登録（status=open）すると自動表示。
+     「掲載を終了」すると自動で下がる。change_date>=今日-1 のものだけ返る。
+     0件・取得失敗時は手書き(#changes-static)をそのまま残す（フォールバック）。 -->
+<script>
+  (async function(){
+    const SB = 'https://ikndtckdvquoxltjgump.supabase.co';
+    const ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlrbmR0Y2tkdnF1b3hsdGpndW1wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA3OTE1ODQsImV4cCI6MjA5NjM2NzU4NH0.AcPMU7S4NFaHRfyxii9cNhXF356Lsn6wb-0aOZHafnM';
+    const KIND = { substitute:'代講', cancel:'休講', time:'時間変更', special:'特別レッスン', class:'クラス変更' };
+    const WD = ['日','月','火','水','木','金','土'];
+
+    function esc(s){ const d=document.createElement('div'); d.textContent = (s==null?'':String(s)); return d.innerHTML; }
+    function fmtDate(s){
+      const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(s||'');
+      if(!m) return esc(s||'');
+      const d = new Date(+m[1], +m[2]-1, +m[3]);
+      return (+m[2]) + '月' + (+m[3]) + '日（' + WD[d.getDay()] + '）';
+    }
+
+    let rows;
+    try {
+      const res = await fetch(SB + '/rest/v1/public_schedule_changes?select=*&order=change_date.asc', {
+        headers: { apikey: ANON, Authorization: 'Bearer ' + ANON }
+      });
+      if(!res.ok) return;                       // 失敗 → 手書きを維持
+      rows = await res.json();
+    } catch(e) { return; }                      // 失敗 → 手書きを維持
+    if(!Array.isArray(rows) || rows.length === 0) return; // 0件 → 手書きを維持
+
+    // 月（YYYY-MM）でグルーピングし、月見出し＋一覧で描画
+    const byMonth = new Map();
+    rows.forEach(function(r){
+      const key = (r.change_date || '').slice(0,7) || 'other';
+      if(!byMonth.has(key)) byMonth.set(key, []);
+      byMonth.get(key).push(r);
+    });
+
+    let html = '';
+    byMonth.forEach(function(items, key){
+      const ym = /^(\d{4})-(\d{2})$/.exec(key);
+      const head = ym
+        ? '<span class="month-num">' + ym[2] + '</span>' + (+ym[1]) + '年' + (+ym[2]) + '月'
+        : 'その他';
+      html += '<div class="month-section"><h2 class="month-title">' + head + '</h2><ul class="change-list">';
+      items.forEach(function(r){
+        const label = KIND[r.kind] || (r.kind ? esc(r.kind) : '');
+        const cls = r.class_name ? '<span class="class-name">「' + esc(r.class_name) + '」</span> ' : '';
+        const detail = r.detail ? '　' + esc(r.detail) : '';
+        html += '<li class="change-item">'
+              +   '<div class="change-date">' + fmtDate(r.change_date) + '</div>'
+              +   '<div class="change-detail">' + cls + label + detail + '</div>'
+              + '</li>';
+      });
+      html += '</ul></div>';
+    });
+
+    const dyn = document.getElementById('changes-dynamic');
+    const stat = document.getElementById('changes-static');
+    if(dyn){ dyn.innerHTML = html; dyn.hidden = false; }
+    if(stat){ stat.hidden = true; }
+  })();
+</script>
 
 </body>
 </html>
