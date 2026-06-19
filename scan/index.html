@@ -186,6 +186,8 @@
 
     .menu-btn.trial { }
     .menu-btn.trial .ic { background: #E5F0F8; color: var(--blue); }
+    .menu-btn.pointe { }
+    .menu-btn.pointe .ic { background: #F7E8EF; color: #B0436E; }
 
     /* ========== スキャン画面 ========== */
     .scan-card { display: none; }
@@ -772,6 +774,14 @@
         <span class="sub">はじめての方</span>
       </span>
     </button>
+
+    <button class="menu-btn pointe" onclick="goToPointeAddon()">
+      <span class="ic">🩰</span>
+      <span class="text">
+        <span class="ttl">ポワント後受付</span>
+        <span class="sub">レッスン後に追加で受ける方</span>
+      </span>
+    </button>
   </div>
 
   <!-- スキャン -->
@@ -1006,6 +1016,8 @@
     let membersCache = []; // {id, n, k}
     let membersSource = "bootstrap"; // "api" | "cache" | "bootstrap"
     let pendingCheckinMember = null; // 確認ダイアログで保持
+    let pointeAddonMode = false;     // 「ポワント後受付」モード（会員ピッカーをチェックインでなくポワント追加に使う）
+    let pendingPointeWalkin = null;  // 会員名簿に無いビジターをポワント後受付する時の氏名
 
     /* ====== v12: 会員リスト loader ====== */
     async function loadMembers() {
@@ -1069,7 +1081,11 @@
     }
 
     /* ====== v12: 手動チェックイン UI ====== */
-    function goToManual() {
+    // 通常の手動チェックイン と「ポワント後受付」は同じ会員ピッカーを共用し、pointeフラグで分岐する
+    function goToManual() { openManual(false); }
+    function goToPointeAddon() { openManual(true); }
+    function openManual(pointe) {
+      pointeAddonMode = !!pointe;
       stopCamera();
       menuCard.classList.add("hide");
       scanCard.classList.remove("show");
@@ -1077,6 +1093,8 @@
       resultCard.classList.remove("show");
       errorCard.classList.remove("show");
       manualCard.classList.add("show");
+      const h = manualCard.querySelector(".heading"); if (h) h.textContent = pointe ? "ポワント後受付" : "会員番号 or お名前";
+      const he = manualCard.querySelector(".heading-en"); if (he) he.textContent = pointe ? "Add pointe after lesson" : "Manual Check-in";
       const input = document.getElementById("manualSearch");
       input.value = "";
       renderMemberList("");
@@ -1108,8 +1126,19 @@
         }).slice(0, 30);
       }
 
+      // ポワント後受付モードで、名簿に無いビジターを氏名で受け付ける導線（processAddPointeのwalkinName）
+      const walkinRow = (pointeAddonMode && q && !/^\d+$/.test(q))
+        ? '<div class="member-item" onclick="pickWalkinPointe()" style="border:1px dashed #B0436E">' +
+            '<div class="mi-id">🩰</div>' +
+            '<div class="mi-body">' +
+              '<div class="mi-name">「' + escapeHtml(q) + '」でポワント受付</div>' +
+              '<div class="mi-kana">会員名簿に無いビジターの方</div>' +
+            '</div>' +
+          '</div>'
+        : '';
+
       if (items.length === 0) {
-        list.innerHTML = '<div class="member-list-empty">該当する会員が見つかりません<br>受付までお声かけください</div>';
+        list.innerHTML = walkinRow || '<div class="member-list-empty">該当する会員が見つかりません<br>受付までお声かけください</div>';
         return;
       }
 
@@ -1121,7 +1150,7 @@
             (m.k ? '<div class="mi-kana">' + escapeHtml(m.k) + '</div>' : '') +
           '</div>' +
         '</div>'
-      ).join("");
+      ).join("") + walkinRow;
     }
 
     function escapeHtml(s) {
@@ -1130,26 +1159,56 @@
       })[c]);
     }
 
+    // 確認ダイアログの文言を通常チェックイン／ポワント後受付で出し分ける
+    function setManualConfirmCopy() {
+      const msg = document.querySelector("#manualConfirm .mc-msg");
+      const cbtn = document.querySelector("#manualConfirm .mc-confirm");
+      if (msg) msg.textContent = pointeAddonMode ? "本日のポワントクラスを追加で受け付けますか？" : "この会員でチェックインしますか？";
+      if (cbtn) cbtn.textContent = pointeAddonMode ? "ポワント追加" : "CHECK IN";
+    }
+
     function onPickMember(id) {
       const m = membersCache.find(x => x.id === id);
       if (!m) return;
       pendingCheckinMember = m;
+      pendingPointeWalkin = null;
       document.getElementById("mcName").textContent = m.n + " 様";
       document.getElementById("mcId").textContent = "No." + String(m.id).padStart(3, "0");
+      setManualConfirmCopy();
+      document.getElementById("manualConfirm").classList.add("show");
+    }
+
+    // ポワント後受付モードで、名簿に無いビジターを氏名で受け付ける
+    function pickWalkinPointe() {
+      const q = (document.getElementById("manualSearch").value || "").trim();
+      if (!q) return;
+      pendingPointeWalkin = q;
+      pendingCheckinMember = null;
+      document.getElementById("mcName").textContent = q + " 様（ビジター）";
+      document.getElementById("mcId").textContent = "ポワント追加";
+      setManualConfirmCopy();
       document.getElementById("manualConfirm").classList.add("show");
     }
 
     function closeManualConfirm() {
       document.getElementById("manualConfirm").classList.remove("show");
       pendingCheckinMember = null;
+      pendingPointeWalkin = null;
     }
 
     async function confirmManualCheckin() {
+      document.getElementById("manualConfirm").classList.remove("show");
+      manualCard.classList.remove("show");
+      if (pointeAddonMode) {
+        const member = pendingCheckinMember, walkin = pendingPointeWalkin;
+        pendingCheckinMember = null; pendingPointeWalkin = null; pointeAddonMode = false;
+        if (member) await sendAddPointe({ memberNumber: member.id });
+        else if (walkin) await sendAddPointe({ walkinName: walkin });
+        return;
+      }
       if (!pendingCheckinMember) return;
       const m = pendingCheckinMember;
-      document.getElementById("manualConfirm").classList.remove("show");
       pendingCheckinMember = null;
-      manualCard.classList.remove("show");
       // sendCheckin と同じ処理（手動入力フラグ付き）
       await sendCheckin({ memberNumber: m.id, manualEntry: true });
     }
@@ -1226,6 +1285,8 @@
       manualCard.classList.remove("show");
       document.getElementById("manualConfirm").classList.remove("show");
       pendingCheckinMember = null;
+      pointeAddonMode = false;
+      pendingPointeWalkin = null;
       document.getElementById("cameraFailCta").classList.remove("show");
     }
 
@@ -1549,6 +1610,92 @@
         pab.disabled = false;
         pab.textContent = "+ ポワントを追加";
       }
+    }
+
+    // ===== ポワント後受付（メニュー → 会員ピッカー or 氏名 → addPointe）=====
+    async function sendAddPointe(payload) {
+      // サーバ側で本日のポワントクラスを引くためオフライン不可（チェックインのようなキューはしない）
+      if (navigator.onLine === false) {
+        showSimpleError("📡", "オフラインのため追加できません", "電波が戻ってからもう一度お試しください");
+        return;
+      }
+      try {
+        const res = await fetch(API_URL, {
+          method: "POST",
+          redirect: "follow",
+          body: JSON.stringify(Object.assign({ addPointe: true }, payload))
+        });
+        const data = await res.json();
+        if (data && data.ok) {
+          if (!data.duplicate) { try { playLightBell(); } catch (e) {} }
+          showPointeAddonResult(data);
+        } else {
+          const msg = (data && (data.message || data.error)) || "ポワント追加に失敗しました";
+          showSimpleError("⚠️", "ポワントを追加できませんでした", msg);
+        }
+      } catch (err) {
+        showSimpleError("📡", "通信できませんでした", "Wi-Fi接続を確認してもう一度お試しください");
+      }
+    }
+
+    function showSimpleError(icon, msg, sub) {
+      stopCamera();
+      menuCard.classList.add("hide");
+      scanCard.classList.remove("show");
+      formCard.classList.remove("show");
+      manualCard.classList.remove("show");
+      resultCard.classList.remove("show");
+      errorCard.classList.add("show");
+      document.querySelector(".errorbox .icon").textContent = icon;
+      document.getElementById("errMsg").textContent = msg;
+      document.getElementById("errDetail").textContent = sub || "";
+    }
+
+    function showPointeAddonResult(data) {
+      stopCamera();
+      menuCard.classList.add("hide");
+      scanCard.classList.remove("show");
+      formCard.classList.remove("show");
+      manualCard.classList.remove("show");
+      errorCard.classList.remove("show");
+      resultCard.classList.add("show");
+
+      const cls = data.class || {};
+      const att = data.attendance || {};
+      const yen = (n) => "¥" + Number(n || 0).toLocaleString();
+      const dot = " <span style='color:var(--text-soft);font-weight:400;margin:0 8px;'>·</span> ";
+
+      document.getElementById("resWelcomeEn").textContent = data.duplicate ? "Already received" : "Pointe added";
+      document.getElementById("resName").textContent = (data.name || "—") + " 様";
+      document.getElementById("resGreeting").textContent = data.duplicate ? "本日はすでにポワント受付済みです" : "ポワントクラスを追加しました";
+      document.getElementById("resClass").textContent = cls.className || "ポワント";
+      document.getElementById("resTeacher").textContent = cls.teacher || "—";
+      document.getElementById("resTime").textContent = (cls.start || "") + (cls.end ? " - " + cls.end : "");
+      document.getElementById("resCountSection").style.display = "none";
+
+      const j = document.getElementById("resJudgment");
+      if (data.duplicate) {
+        j.className = "badge ok";
+        j.innerHTML = "本日受付済み" + dot + "<span class='price'>¥0</span>";
+      } else {
+        j.className = "badge warn";
+        j.innerHTML = "ポワントクラス" + dot + "<span class='price'>" + yen(att.amount) + "</span>";
+      }
+
+      // 結果画面の「+ポワント追加」プロンプトは出さない（もう追加済み）。再addPointe防止に lastResultData も消す
+      const pa = document.getElementById("pointeAddon"); if (pa) pa.classList.remove("show");
+      const par = document.getElementById("pointeAddonResult"); if (par) { par.classList.remove("show"); par.textContent = ""; par.style.color = ""; }
+      lastResultData = null;
+
+      if (countdownTimer) { clearInterval(countdownTimer); countdownTimer = null; }
+      let sec = 8;
+      const cd = document.getElementById("resCountdown");
+      cd.textContent = "Returning to menu in " + sec + " seconds";
+      countdownTimer = setInterval(() => {
+        sec--;
+        if (sec <= 0) { clearInterval(countdownTimer); backToMenu(); }
+        else cd.textContent = "Returning to menu in " + sec + " seconds";
+      }, 1000);
     }
 
     function showFriendlyError(code, message) {
