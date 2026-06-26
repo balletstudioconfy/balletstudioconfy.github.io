@@ -1015,6 +1015,8 @@
 
     let membersCache = []; // {id, n, k}
     let membersSource = "bootstrap"; // "api" | "cache" | "bootstrap"
+    let lastMembersFetchAt = 0;                 // 直近に getMembers を叩いた時刻（背景再取得のスロットリング用）
+    const MEMBERS_REFRESH_THROTTLE_MS = 45000;  // 45秒以内は再fetchしない（API過負荷防止）
     let pendingCheckinMember = null; // 確認ダイアログで保持
     let pointeAddonMode = false;     // 「ポワント後受付」モード（会員ピッカーをチェックインでなくポワント追加に使う）
     let pendingPointeWalkin = null;  // 会員名簿に無いビジターをポワント後受付する時の氏名
@@ -1035,6 +1037,7 @@
       } catch (e) {}
 
       // 2) API fetch（バックグラウンド）
+      lastMembersFetchAt = Date.now();   // ★await前に同期で記録＝連続発火のスロットリングが効く
       try {
         const res = await fetch(API_URL + "?action=getMembers", { method: "GET" });
         if (res.ok) {
@@ -1069,6 +1072,14 @@
       }
     }
 
+    /* 開きっぱなしのタブレットでも新会員が出るよう、会員リストを背景で取り直す。
+       cache-first で UI は即動くので await しない。スロットリングで連打/API過負荷を防ぐ。
+       （getMembers の呼び出し契約は loadMembers のまま＝体験受付/トークン経路に無影響） */
+    function maybeRefreshMembers() {
+      if (Date.now() - lastMembersFetchAt < MEMBERS_REFRESH_THROTTLE_MS) return;
+      loadMembers().catch(() => {});   // 失敗しても cache/bootstrap で動く（loadMembers内で握る）
+    }
+
     function updateManualMeta() {
       const el = document.getElementById("manualMeta");
       if (!el) return;
@@ -1085,6 +1096,7 @@
     function goToManual() { openManual(false); }
     function goToPointeAddon() { openManual(true); }
     function openManual(pointe) {
+      maybeRefreshMembers();   // 手動チェックインを開くたびに会員リストを背景で最新化（リロード不要化・throttle付き）
       pointeAddonMode = !!pointe;
       stopCamera();
       menuCard.classList.add("hide");
@@ -1292,6 +1304,7 @@
 
     function backToMenu() {
       backToMenuExt();
+      maybeRefreshMembers();   // メニューに戻るたびに会員リストを背景で最新化（次の手動受付に備える・throttle付き）
       stopCamera();
       if (countdownTimer) { clearInterval(countdownTimer); countdownTimer = null; }
       scanCard.classList.remove("show");
