@@ -975,7 +975,9 @@
     const SCAN_TOKEN = "scan_D_UPV-JNPO28waLVZtos76ExvKkygvMm";
     // 移行B Phase B: URLに ?checkin=ops を付けた時だけ、会員チェックインの判定をOPS(/scan/checkin)で行う opt-in。
     // ⚠️現状 OPSは判定のみ・未記録(プレビュー)。教室のタブレット(通常URL)は従来GASのまま＝無影響。岩月のPC検証用。
-    const USE_OPS_CHECKIN = new URLSearchParams(location.search).get("checkin") === "ops";
+    const _checkinParam = new URLSearchParams(location.search).get("checkin");
+    const USE_OPS_CHECKIN = _checkinParam === "ops" || _checkinParam === "ops-dry"; // どちらもOPS判定へ
+    const OPS_COMMIT = _checkinParam === "ops"; // ?checkin=ops は実記録 / ?checkin=ops-dry は判定のみ(プレビュー)
     function notifyTrialCheckin(name, furigana) {
       try {
         fetch(LINE_GATEWAY_URL + "/scan/trial-checkin", {
@@ -1437,8 +1439,9 @@
           limit, effectiveLimit: limit + carry, carryOver: carry, monthCount: cnt,
           remaining: Math.max(0, (limit + carry) - cnt),
         },
-        class: { className: rs.className || "—", teacher: "—", start: rs.classStart || "", end: "" },
-        _opsPreview: !r.recorded,
+        class: { className: rs.className || "—", teacher: rs.instructor || "—", start: rs.classStart || "", end: rs.classEnd || "" },
+        _opsPreview: !r.recorded && !r.duplicate,
+        _opsDuplicate: !!r.duplicate,
       };
     }
 
@@ -1455,7 +1458,7 @@
           const res = await fetch(LINE_GATEWAY_URL + "/scan/checkin", {
             method: "POST",
             headers: { "content-type": "application/json", "x-scan-token": SCAN_TOKEN },
-            body: JSON.stringify({ member_no: payload.memberNumber }),
+            body: JSON.stringify({ member_no: payload.memberNumber, commit: OPS_COMMIT }),
           });
           const r = await res.json();
           if (r && r.ok) { showResult(mapOpsCheckinToResult(r)); return; }
@@ -1528,7 +1531,10 @@
       document.getElementById("resGreeting").textContent = greetings[data.type] || "ご来館ありがとうございます";
       document.getElementById("resWelcomeEn").textContent = en[data.type] || "Welcome";
       // 移行B Phase B プレビュー: OPS判定の表示（まだ記録していない）と明示
-      if (data._opsPreview) {
+      if (data._opsDuplicate) {
+        document.getElementById("resGreeting").textContent = "本日は受付済みです";
+        document.getElementById("resWelcomeEn").textContent = "Already checked in today";
+      } else if (data._opsPreview) {
         document.getElementById("resGreeting").textContent = "🧪 OPSプレビュー（まだ記録していません）";
         document.getElementById("resWelcomeEn").textContent = "OPS preview · not recorded";
       }
