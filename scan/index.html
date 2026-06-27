@@ -973,6 +973,9 @@
     // 公開HTMLに載るため厳密な秘匿ではない＝URLを叩くだけの無差別投稿を弾く位置づけ。値を変える時は
     // 両方（このconst と `wrangler secret put SCAN_TOKEN`）を同時に更新する。
     const SCAN_TOKEN = "scan_D_UPV-JNPO28waLVZtos76ExvKkygvMm";
+    // 移行B Phase B: URLに ?checkin=ops を付けた時だけ、会員チェックインの判定をOPS(/scan/checkin)で行う opt-in。
+    // ⚠️現状 OPSは判定のみ・未記録(プレビュー)。教室のタブレット(通常URL)は従来GASのまま＝無影響。岩月のPC検証用。
+    const USE_OPS_CHECKIN = new URLSearchParams(location.search).get("checkin") === "ops";
     function notifyTrialCheckin(name, furigana) {
       try {
         fetch(LINE_GATEWAY_URL + "/scan/trial-checkin", {
@@ -1422,11 +1425,44 @@
       await sendCheckin({ walkin: { type: currentFormType, name, furigana } });
     }
 
+    // 移行B Phase B: OPSの /scan/checkin 応答(CheckinReport)を showResult が読める形に写す。
+    function mapOpsCheckinToResult(r) {
+      const rs = r.resolved || {};
+      const limit = rs.limit || 0, carry = rs.carryover || 0, cnt = r.monthCount || 0;
+      return {
+        ok: true, type: "member",
+        member: { name: rs.name || "会員さま" },
+        attendance: {
+          judgment: r.judgment, amount: r.fee || 0,
+          limit, effectiveLimit: limit + carry, carryOver: carry, monthCount: cnt,
+          remaining: Math.max(0, (limit + carry) - cnt),
+        },
+        class: { className: rs.className || "—", teacher: "—", start: rs.classStart || "", end: "" },
+        _opsPreview: !r.recorded,
+      };
+    }
+
     async function sendCheckin(payload) {
       // v12: オンライン状態チェック → オフラインなら直接キューイン
       if (navigator.onLine === false) {
         enqueueCheckin(payload);
         showFriendlyError("NETWORK_OFFLINE_QUEUED");
+        return;
+      }
+      // 移行B Phase B プレビュー: ?checkin=ops の時、会員チェックインの判定をOPSで（※現状 未記録）。会員以外(walkin/体験)は従来GAS。
+      if (USE_OPS_CHECKIN && payload && payload.memberNumber) {
+        try {
+          const res = await fetch(LINE_GATEWAY_URL + "/scan/checkin", {
+            method: "POST",
+            headers: { "content-type": "application/json", "x-scan-token": SCAN_TOKEN },
+            body: JSON.stringify({ member_no: payload.memberNumber }),
+          });
+          const r = await res.json();
+          if (r && r.ok) { showResult(mapOpsCheckinToResult(r)); return; }
+          showFriendlyError("OPS_PREVIEW_ERROR", (r && (r.error || JSON.stringify(r))) || "OPS判定に失敗");
+        } catch (err) {
+          showFriendlyError("OPS_PREVIEW_ERROR", err && err.message);
+        }
         return;
       }
       try {
@@ -1491,6 +1527,11 @@
       };
       document.getElementById("resGreeting").textContent = greetings[data.type] || "ご来館ありがとうございます";
       document.getElementById("resWelcomeEn").textContent = en[data.type] || "Welcome";
+      // 移行B Phase B プレビュー: OPS判定の表示（まだ記録していない）と明示
+      if (data._opsPreview) {
+        document.getElementById("resGreeting").textContent = "🧪 OPSプレビュー（まだ記録していません）";
+        document.getElementById("resWelcomeEn").textContent = "OPS preview · not recorded";
+      }
 
       const cls = data.class || {};
       document.getElementById("resClass").textContent = cls.className || "—";
