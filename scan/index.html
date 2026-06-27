@@ -985,9 +985,9 @@
     const RESULT_DISPLAY_SECONDS = 10;
 
     /* ====== v12: 設定 ====== */
-    const SCANNER_VERSION = "v12.1";
-    const MEMBERS_CACHE_KEY = "scanner_members_v1";
-    const MEMBERS_CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24h
+    const SCANNER_VERSION = "v12.2";
+    const MEMBERS_CACHE_KEY = "scanner_members_v2";          // v2: 会員ソースをOPSマージ配信に切替(旧24hキャッシュを無効化)
+    const MEMBERS_CACHE_TTL_MS = 60 * 60 * 1000;             // 1h（新会員が早く反映されるよう短縮。開く度の背景再取得と併用）
     const QUEUE_KEY = "scanner_queue_v1";
 
     const menuCard = document.getElementById("menuCard");
@@ -1036,32 +1036,41 @@
         }
       } catch (e) {}
 
-      // 2) API fetch（バックグラウンド）
+      // API応答(members配列)を内部形式{id,n,k}にしてキャッシュ保存する共通処理
+      const applyMembers = (arr) => {
+        membersCache = arr.map(m => ({ id: m.id || m.member_no || m.memberNumber, n: m.name || m.n, k: m.kana || m.k || "" }));
+        membersSource = "api";
+        try { localStorage.setItem(MEMBERS_CACHE_KEY, JSON.stringify({ timestamp: Date.now(), members: membersCache })); } catch (e) {}
+        updateManualMeta();
+      };
+
       lastMembersFetchAt = Date.now();   // ★await前に同期で記録＝連続発火のスロットリングが効く
+
+      // 2a) 主ソース: OPSマージ配信（line-gateway /scan/members = GAS台帳＋会費ペイ）。
+      //     会費ペイ登録済でも台帳未追記の新会員(加藤まい#76 等)をここで拾う。x-scan-token認証。
+      try {
+        const res = await fetch(LINE_GATEWAY_URL + "/scan/members", { method: "GET", headers: { "x-scan-token": SCAN_TOKEN } });
+        if (res.ok) {
+          const data = await res.json();
+          if (data && Array.isArray(data.members) && data.members.length) {
+            applyMembers(data.members);
+            return;
+          }
+        }
+      } catch (e) { /* OPS不通 → 下のGASフォールバックへ */ }
+
+      // 2b) フォールバック: 従来の GAS doGet getMembers(2_会員台帳)。OPS不通/未反映時も現状動作を温存（安全網）。
       try {
         const res = await fetch(API_URL + "?action=getMembers", { method: "GET" });
         if (res.ok) {
           const data = await res.json();
           if (data && Array.isArray(data.members)) {
-            // APIは {id, name, kana} 形式と仮定 → 内部形式に変換
-            membersCache = data.members.map(m => ({
-              id: m.id || m.memberNumber,
-              n: m.name || m.n,
-              k: m.kana || m.k || ""
-            }));
-            membersSource = "api";
-            try {
-              localStorage.setItem(MEMBERS_CACHE_KEY, JSON.stringify({
-                timestamp: Date.now(),
-                members: membersCache
-              }));
-            } catch (e) {}
-            updateManualMeta();
+            applyMembers(data.members);
             return;
           }
         }
       } catch (e) {
-        // API失敗：cacheがあればそれ使う、なければbootstrap
+        // GASも不通：cacheがあればそれ使う、なければbootstrap
       }
 
       // 3) Fallback: bootstrap
