@@ -976,8 +976,9 @@
     // 移行B Phase B: URLに ?checkin=ops を付けた時だけ、会員チェックインの判定をOPS(/scan/checkin)で行う opt-in。
     // ⚠️現状 OPSは判定のみ・未記録(プレビュー)。教室のタブレット(通常URL)は従来GASのまま＝無影響。岩月のPC検証用。
     const _checkinParam = new URLSearchParams(location.search).get("checkin");
-    const USE_OPS_CHECKIN = _checkinParam === "ops" || _checkinParam === "ops-dry"; // どちらもOPS判定へ
-    const OPS_COMMIT = _checkinParam === "ops"; // ?checkin=ops は実記録 / ?checkin=ops-dry は判定のみ(プレビュー)
+    // 移行B 全台切替(2026-06-27): 既定=OPS記録。?checkin=gas で従来GASへ退避(即ロールバック用)、?checkin=ops-dry で記録なしプレビュー。
+    const USE_OPS_CHECKIN = _checkinParam !== "gas";   // 既定OPS・?checkin=gas だけ従来GAS
+    const OPS_COMMIT = _checkinParam !== "ops-dry";    // ops-dry 以外は実記録
     function notifyTrialCheckin(name, furigana) {
       try {
         fetch(LINE_GATEWAY_URL + "/scan/trial-checkin", {
@@ -1461,12 +1462,13 @@
             body: JSON.stringify({ member_no: payload.memberNumber, commit: OPS_COMMIT }),
           });
           const r = await res.json();
-          if (r && r.ok) { showResult(mapOpsCheckinToResult(r)); return; }
-          showFriendlyError("OPS_PREVIEW_ERROR", (r && (r.error || JSON.stringify(r))) || "OPS判定に失敗");
+          if (res.ok && r && r.ok) { showResult(mapOpsCheckinToResult(r)); return; }
+          console.warn("OPS checkin not ok → GASフォールバック", r);
         } catch (err) {
-          showFriendlyError("OPS_PREVIEW_ERROR", err && err.message);
+          console.warn("OPS checkin error → GASフォールバック", err && err.message);
         }
-        return;
+        // OPS失敗時は従来GAS doPostへフォールバック（下の通常処理を実行）。
+        // ※二重記録はGAS側 findCheckinMark_（当日同名同クラス）の重複ガードで防がれる。
       }
       try {
         const res = await fetch(API_URL, {
