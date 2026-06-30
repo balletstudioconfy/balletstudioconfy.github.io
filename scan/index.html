@@ -973,8 +973,8 @@
     // 公開HTMLに載るため厳密な秘匿ではない＝URLを叩くだけの無差別投稿を弾く位置づけ。値を変える時は
     // 両方（このconst と `wrangler secret put SCAN_TOKEN`）を同時に更新する。
     const SCAN_TOKEN = "scan_D_UPV-JNPO28waLVZtos76ExvKkygvMm";
-    // 移行B Phase B: URLに ?checkin=ops を付けた時だけ、会員チェックインの判定をOPS(/scan/checkin)で行う opt-in。
-    // ⚠️現状 OPSは判定のみ・未記録(プレビュー)。教室のタブレット(通常URL)は従来GASのまま＝無影響。岩月のPC検証用。
+    // 移行B Phase B: 会員チェックインを OPS(/scan/checkin) 経由で判定＋記録する（会員以外=walkin/体験は従来GAS doPostのまま）。
+    // 2026-06-27「全台切替」で既定ON＝教室タブレット(通常URL)も実記録（OPSがGAS 4_出席ログへ書く）。経路の既定/退避は下の3定数で決まる。
     const _checkinParam = new URLSearchParams(location.search).get("checkin");
     // 移行B 全台切替(2026-06-27): 既定=OPS記録。?checkin=gas で従来GASへ退避(即ロールバック用)、?checkin=ops-dry で記録なしプレビュー。
     const USE_OPS_CHECKIN = _checkinParam !== "gas";   // 既定OPS・?checkin=gas だけ従来GAS
@@ -1453,7 +1453,8 @@
         showFriendlyError("NETWORK_OFFLINE_QUEUED");
         return;
       }
-      // 移行B Phase B プレビュー: ?checkin=ops の時、会員チェックインの判定をOPSで（※現状 未記録）。会員以外(walkin/体験)は従来GAS。
+      // 移行B Phase B: 会員(memberNumber有)は OPS /scan/checkin で判定＋記録（commit=OPS_COMMIT。既定true＝実記録）。会員以外(walkin/体験)は従来GAS doPost。
+      // OPS応答が ok でなければ下の従来GAS doPostへフォールバック（二重記録はGAS findCheckinMark_ の重複ガードで防止）。
       if (USE_OPS_CHECKIN && payload && payload.memberNumber) {
         try {
           const res = await fetch(LINE_GATEWAY_URL + "/scan/checkin", {
