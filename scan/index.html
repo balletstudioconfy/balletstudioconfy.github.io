@@ -8,7 +8,8 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="CONFY出席">
-  <link rel="apple-touch-icon" href="icon-180.png">
+  <meta name="robots" content="noindex">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <title>会員カードスキャン - Ballet Studio CONFY</title>
 
   <!-- 上品なフォント -->
@@ -1279,20 +1280,39 @@
       let drained = 0;
       for (const item of arr) {
         try {
-          const res = await fetch(API_URL, {
-            method: "POST",
-            redirect: "follow",
-            body: JSON.stringify(item.payload)
-          });
-          const data = await res.json();
-          if (data && data.ok) {
+          const p = item.payload || {};
+          let ok = false;
+          if (USE_OPS_CHECKIN && p.memberNumber) {
+            // 跨ぎ二重課金fix①(2026-07-01): 会員の再送は必ず OPS /scan/checkin(commit) へ。
+            //   従来はGAS /exec へ無条件再送し、OPSで既記録の会員が「跨ぎ二重行=二重課金」になる窓だった。
+            //   OPSのF2重複ガード(当日×同名×同クラス)が既記録を弾く＝跨ぎ書込自体を作らない。
+            //   ★GASフォールバックは付けない: 再送は既記録の可能性があり、GASへ落とすと窓が再び開くため。
+            //   OPSがネット/例外で未到達の時だけ remaining に残す(catch)。到達して非ok＝再送不能→drop(下)。
+            const res = await fetch(LINE_GATEWAY_URL + "/scan/checkin", {
+              method: "POST",
+              headers: { "content-type": "application/json", "x-scan-token": SCAN_TOKEN },
+              body: JSON.stringify({ member_no: p.memberNumber, commit: OPS_COMMIT }),
+            });
+            const r = await res.json();
+            ok = !!(res.ok && r && r.ok);   // recorded/duplicate どちらも ok:true＝正常消化(二重行なし)
+          } else {
+            // walkin/体験(memberNumber無)は従来どおり GAS doPost。
+            const res = await fetch(API_URL, {
+              method: "POST",
+              redirect: "follow",
+              body: JSON.stringify(p)
+            });
+            const data = await res.json();
+            ok = !!(data && data.ok);
+          }
+          if (ok) {
             drained++;
           } else {
-            // サーバーが拒否：再送しても無理 → 諦めて消す（ログだけ残す）
-            console.warn("Queue item rejected by server, dropping:", item, data);
+            // サーバーが到達済で拒否：再送しても無理 → 諦めて消す（ログだけ残す）
+            console.warn("Queue item rejected by server, dropping:", item);
           }
         } catch (e) {
-          // ネットエラー：残す
+          // ネットエラー(未到達)：残す
           remaining.push(item);
         }
       }
